@@ -22,7 +22,7 @@ public class TasksCodeborneCheck {
 
   @Before
   public void openPage() {
-    navigateToAbsoluteUrl("https://tasks.codeborne.com/");
+    navigateToAbsoluteUrl("http://tasks.codeborne.com/");
   }
 
   @Test
