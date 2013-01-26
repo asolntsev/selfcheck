@@ -1,6 +1,5 @@
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
+.idea
+*.iml
+build
+chromedriver.log
+.gradle/1.3

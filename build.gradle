@@ -1,0 +1,41 @@
+apply plugin: 'java'
+defaultTasks 'clean', 'libs', 'test'
+sourceSets {
+  main {
+    java {srcDir 'src'}
+    resources {srcDir 'src'}
+  }
+  test {
+    java {srcDir 'test'}
+    resources {srcDir 'test'}
+  }
+}
+
+repositories{
+  mavenCentral()
+  maven {
+      url "https://oss.sonatype.org/content/repositories/snapshots/"
+  }
+}
+
+dependencies {
+  testCompile 'com.codeborne:selenide:1.10-SNAPSHOT'
+}
+
+task libs(type: Sync) {
+  from configurations.testCompile
+  into "$buildDir/lib"
+}
+
+[compileJava, compileTestJava]*.options.collect {options -> options.encoding = 'UTF-8'}
+[compileJava, compileTestJava]*.options.collect {options -> options.debug = true}
+
+test {
+  systemProperties 'file.encoding': 'UTF-8'
+  systemProperties['browser'] = 'htmlunit'
+  testLogging.showStandardStreams = true
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.3'
+}
