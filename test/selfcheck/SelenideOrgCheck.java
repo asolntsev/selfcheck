@@ -14,7 +14,7 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static com.codeborne.selenide.junit.ScreenShooter.failedTests;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "1.9";
+  private static final String LAST_SELENIDE_VERSION = "1.10";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
@@ -55,7 +55,7 @@ public class SelenideOrgCheck {
     $(By.linkText("Hangman")).shouldHave(attribute("href", "https://github.com/asolntsev/hangman/blob/master/selenide/test/ee/uitest/HangmanSpec.java"));
     $(By.linkText("Hangman")).click();
     $(".final-path").shouldHave(text("HangmanSpec.java"));
-    $(".highlight").shouldHave(text("extends AbstractHangmanTest"));
+    $(".highlight").shouldHave(text("public class HangmanSpec {"));
   }
 
   @Test
