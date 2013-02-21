@@ -19,11 +19,14 @@ repositories{
 }
 
 dependencies {
-  testCompile 'com.codeborne:selenide:1.10-SNAPSHOT'
+  testCompile 'com.codeborne:selenide:1.11-SNAPSHOT'
+  testCompile 'junit:junit:4.11'
+  testRuntime group: 'org.seleniumhq.selenium', name: 'selenium-htmlunit-driver', version: '2.30.0'
 }
 
 task libs(type: Sync) {
   from configurations.testCompile
+  from configurations.testRuntime
   into "$buildDir/lib"
 }
 
@@ -37,5 +40,5 @@ test {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.3'
+    gradleVersion = '1.4'
 }
