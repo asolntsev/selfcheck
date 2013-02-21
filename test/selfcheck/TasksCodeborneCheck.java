@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.DOM.$;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Navigation.navigateToAbsoluteUrl;
 import static com.codeborne.selenide.Selectors.byAttribute;
 import static com.codeborne.selenide.Selectors.byText;
@@ -40,9 +40,9 @@ public class TasksCodeborneCheck {
   @Test
   public void userCanSubmitSolution() {
     $(By.linkText("Submit your solution »")).click();
-    $(By.name("author")).type("Chuck Norris");
-    $(By.name("authorEmail")).type("gmail@chuck.norris");
-    $(By.name("content")).type("BEGIN\n do it!\nEND;");
+    $(By.name("author")).setValue("Chuck Norris");
+    $(By.name("authorEmail")).setValue("gmail@chuck.norris");
+    $(By.name("content")).setValue("BEGIN\n do it!\nEND;");
     $(byAttribute("value", "Submit solution")).shouldBe(visible, enabled);
     $(byText("Cancel")).click();
   }

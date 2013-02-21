@@ -19,7 +19,7 @@ repositories{
 }
 
 dependencies {
-  testCompile 'com.codeborne:selenide:1.10-SNAPSHOT'
+  testCompile 'com.codeborne:selenide:1.11-SNAPSHOT'
 }
 
 task libs(type: Sync) {
@@ -37,5 +37,5 @@ test {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.3'
+    gradleVersion = '1.4'
 }
