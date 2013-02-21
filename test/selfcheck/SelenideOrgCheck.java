@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.DOM.$;
-import static com.codeborne.selenide.Navigation.navigateToAbsoluteUrl;
+import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static com.codeborne.selenide.junit.ScreenShooter.failedTests;
@@ -21,7 +21,7 @@ public class SelenideOrgCheck {
 
   @Before
   public void openPage() {
-    navigateToAbsoluteUrl("http://selenide.org");
+    open("http://selenide.org");
   }
 
   @Test
