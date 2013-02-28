@@ -13,7 +13,7 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static com.codeborne.selenide.junit.ScreenShooter.failedTests;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "1.10";
+  private static final String LAST_SELENIDE_VERSION = "1.11";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();

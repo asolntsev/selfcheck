@@ -13,13 +13,13 @@ sourceSets {
 
 repositories{
   mavenCentral()
-  maven {
-      url "https://oss.sonatype.org/content/repositories/snapshots/"
-  }
+//  maven {
+//      url "https://oss.sonatype.org/content/repositories/snapshots/"
+//  }
 }
 
 dependencies {
-  testCompile 'com.codeborne:selenide:1.11-SNAPSHOT'
+  testCompile 'com.codeborne:selenide:1.11'
   testCompile 'junit:junit:4.11'
   testRuntime group: 'org.seleniumhq.selenium', name: 'selenium-htmlunit-driver', version: '2.30.0'
 }
