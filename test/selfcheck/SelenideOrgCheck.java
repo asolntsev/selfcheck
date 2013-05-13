@@ -20,14 +20,15 @@ public class SelenideOrgCheck {
 
   @Before
   public void openPage() {
-    open("http://selenide.org");
+    open("http://codeborne.github.io/selenide/"); // TODO Configure selenide.org without frames
+//    open("http://selenide.org");
   }
 
   @Test
   public void selenideOrg() {
     $("h1").shouldHave(text("Selenide"));
-    $(byText("Concise UI Tests in Java")).shouldBe(visible);
-    $(byText("Heartbeat")).shouldBe(visible);
+    $(byText("Concise UI tests in Java")).shouldBe(visible);
+//    $(byText("Heartbeat")).shouldBe(visible);
     $(byText("How to start?")).shouldBe(visible);
   }
 
@@ -42,16 +43,16 @@ public class SelenideOrgCheck {
   @Test
   public void checkQuickGuideLink() {
     $(By.linkText("Quick Start guide")).click();
-    $(byText("Quick Start")).shouldBe(visible);
+    $("body").find(byText("Quick Start")).shouldBe(visible);
     checkSelenideJarLink();
-    $("code").shouldHave(text("<dependency org=\"com.codeborne\" name=\"selenide\" revision=\""+LAST_SELENIDE_VERSION+"\"/>"));
+    $("code", 1).shouldHave(text("<dependency org=\"com.codeborne\" name=\"selenide\" rev=\""+LAST_SELENIDE_VERSION+"\"/>"));
 
     $(By.linkText("selenide_examples")).shouldHave(attribute("href", "https://github.com/codeborne/selenide_examples"));
     $(By.linkText("selenide_examples")).click();
     $("article").shouldHave(text("Selenide examples")).shouldBe(visible);
     getWebDriver().navigate().back();
 
-    $(By.linkText("Hangman")).shouldHave(attribute("href", "https://github.com/asolntsev/hangman/blob/master/selenide/test/ee/uitest/HangmanSpec.java"));
+    $(By.linkText("Hangman")).shouldHave(attribute("href", "https://github.com/asolntsev/hangman/blob/master/test/uitest/selenide/HangmanSpec.java"));
     $(By.linkText("Hangman")).click();
     $(".final-path").shouldHave(text("HangmanSpec.java"));
     $(".highlight").shouldHave(text("public class HangmanSpec {"));
