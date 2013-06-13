@@ -46,15 +46,17 @@ public class SelenideOrgCheck {
     checkSelenideJarLink();
     $("code", 1).shouldHave(text("<dependency org=\"com.codeborne\" name=\"selenide\" rev=\""+LAST_SELENIDE_VERSION+"\"/>"));
 
-    $(By.linkText("selenide_examples")).shouldHave(attribute("href", "https://github.com/codeborne/selenide_examples"));
-    $(By.linkText("selenide_examples")).click();
+    $(By.linkText("Selenide examples"))
+      .shouldHave(attribute("href", "https://github.com/codeborne/selenide_examples"))
+      .click();
     $("article").shouldHave(text("Selenide examples")).shouldBe(visible);
     getWebDriver().navigate().back();
 
-    $(By.linkText("Hangman")).shouldHave(attribute("href", "https://github.com/asolntsev/hangman/blob/master/test/uitest/selenide/HangmanSpec.java"));
-    $(By.linkText("Hangman")).click();
+    $(By.linkText("Hangman game"))
+      .shouldHave(attribute("href", "https://github.com/asolntsev/hangman/blob/master/test/uitest/selenide/HangmanSpec.java"))
+      .click();
     $(".final-path").shouldHave(text("HangmanSpec.java"));
-    $(".highlight").shouldHave(text("public class HangmanSpec {"));
+    $(".highlight").shouldHave(text("public class HangmanSpec"));
   }
 
   @Test

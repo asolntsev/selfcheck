@@ -19,9 +19,9 @@ repositories{
 }
 
 dependencies {
-  testCompile 'com.codeborne:selenide:2.0'
+  testCompile 'com.codeborne:selenide:2.2'
   testCompile 'junit:junit:4.11'
-  testRuntime group: 'org.seleniumhq.selenium', name: 'selenium-htmlunit-driver', version: '2.31.0'
+  testRuntime group: 'org.seleniumhq.selenium', name: 'selenium-htmlunit-driver', version: '2.33.0'
 }
 
 task libs(type: Sync) {
@@ -35,10 +35,10 @@ task libs(type: Sync) {
 
 test {
   systemProperties 'file.encoding': 'UTF-8'
-  systemProperties['browser'] = 'htmlunit'
+  // systemProperties['browser'] = 'htmlunit'
   testLogging.showStandardStreams = true
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.4'
+    gradleVersion = '1.6'
 }
