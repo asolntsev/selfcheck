@@ -25,10 +25,8 @@ public class SelenideOrgCheck {
 
   @Test
   public void selenideOrg() {
-    $("h1").shouldHave(text("Selenide"));
-    $(byText("Concise UI tests in Java")).shouldBe(visible);
-//    $(byText("Heartbeat")).shouldBe(visible);
-    $(byText("How to start?")).shouldBe(visible);
+    $(".main-menu-pages li").shouldHave(text("Quick start"));
+    $(".short").shouldHave(text("What is Selenide?"));
   }
 
   @Test
@@ -41,8 +39,8 @@ public class SelenideOrgCheck {
 
   @Test
   public void checkQuickGuideLink() {
-    $(By.linkText("Quick Start guide")).click();
-    $("body").find(byText("Quick Start")).shouldBe(visible);
+    $(By.linkText("Quick start")).click();
+    $("body").find(byText("Quick start")).shouldBe(visible);
     checkSelenideJarLink();
     $("code", 1).shouldHave(text("<dependency org=\"com.codeborne\" name=\"selenide\" rev=\""+LAST_SELENIDE_VERSION+"\"/>"));
 
@@ -61,9 +59,9 @@ public class SelenideOrgCheck {
 
   @Test
   public void checkSeleniumWebDriverLink() {
-    $(By.linkText("Selenium WebDriver")).shouldHave(attribute("href", "http://seleniumhq.org/projects/webdriver/"));
-    $(By.linkText("Selenium WebDriver")).click();
-    $("h2").shouldHave(text("Selenium WebDriver"));
-    getWebDriver().navigate().back();
+    $(By.linkText("Selenium WebDriver")).shouldHave(attribute("href", "http://docs.seleniumhq.org/projects/webdriver/"));
+//    $(By.linkText("Selenium WebDriver")).click();
+//    $("h1").shouldHave(text("Selenium WebDriver"));
+//    getWebDriver().navigate().back();
   }
 }
