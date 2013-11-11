@@ -19,9 +19,9 @@ repositories{
 }
 
 dependencies {
-  testCompile 'com.codeborne:selenide:2.4'
+  testCompile 'com.codeborne:selenide:2.5'
   testCompile 'junit:junit:4.11'
-  testRuntime group: 'org.seleniumhq.selenium', name: 'selenium-htmlunit-driver', version: '2.35.0'
+  testRuntime group: 'org.seleniumhq.selenium', name: 'selenium-htmlunit-driver', version: '2.37.1'
 }
 
 task libs(type: Sync) {
