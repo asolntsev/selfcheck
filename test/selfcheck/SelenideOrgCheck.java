@@ -6,14 +6,22 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.jar.JarFile;
+
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static com.codeborne.selenide.junit.ScreenShooter.failedTests;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "2.5";
+  private static final String LAST_SELENIDE_VERSION = "2.6.2";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
@@ -30,15 +38,19 @@ public class SelenideOrgCheck {
   }
 
   @Test
-  public void checkSelenideJarLink() {
-    // TODO Try to click link and download jar
+  public void checkSelenideJarLink() throws IOException {
     $(By.linkText("selenide.jar")).shouldHave(
         attribute("href", "http://search.maven.org/remotecontent?filepath=" +
             "com/codeborne/selenide/"+LAST_SELENIDE_VERSION+"/selenide-"+LAST_SELENIDE_VERSION+".jar"));
+    File selenideJar = $(By.linkText("selenide.jar")).download();
+    assertEquals("selenide-" + LAST_SELENIDE_VERSION + ".jar", selenideJar.getName());
+    JarFile jarFile = new JarFile(selenideJar);
+    Enumeration en = jarFile.entries();
+    assertTrue("selenide.jar is empty", en.hasMoreElements());
   }
 
   @Test
-  public void checkQuickGuideLink() {
+  public void checkQuickGuideLink() throws IOException {
     $(By.linkText("Quick start")).click();
     $("body").find(byText("Quick start")).shouldBe(visible);
     checkSelenideJarLink();
