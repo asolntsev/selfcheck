@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "2.10";
+  private static final String LAST_SELENIDE_VERSION = "2.18";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
@@ -57,13 +57,13 @@ public class SelenideOrgCheck {
     $("code", 1).shouldHave(text("<dependency org=\"com.codeborne\" name=\"selenide\" rev=\""+LAST_SELENIDE_VERSION+"\"/>"));
 
     $(By.linkText("Selenide examples"))
-      .shouldHave(attribute("href", "https://github.com/codeborne/selenide_examples"))
+      .shouldHave(attribute("href", "https://github.com/selenide-examples"))
       .click();
-    $("article").shouldHave(text("Selenide examples")).shouldBe(visible);
+    $(".org-header-info").shouldHave(text("selenide-examples")).shouldBe(visible);
     getWebDriver().navigate().back();
 
     $(By.linkText("Hangman game"))
-      .shouldHave(attribute("href", "https://github.com/asolntsev/hangman/blob/master/test/uitest/selenide/HangmanSpec.java"))
+      .shouldHave(attribute("href", "https://github.com/selenide-examples/hangman/blob/master/test/uitest/selenide/HangmanSpec.java"))
       .click();
     $(".final-path").shouldHave(text("HangmanSpec.java"));
     $(".highlight").shouldHave(text("public class HangmanSpec"));
