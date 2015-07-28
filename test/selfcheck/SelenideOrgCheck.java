@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "2.18";
+  private static final String LAST_SELENIDE_VERSION = "2.20";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
@@ -59,7 +59,7 @@ public class SelenideOrgCheck {
     $(By.linkText("Selenide examples"))
       .shouldHave(attribute("href", "https://github.com/selenide-examples"))
       .click();
-    $(".org-header-info").shouldHave(text("selenide-examples")).shouldBe(visible);
+    $(".org-name").shouldHave(text("selenide-examples")).shouldBe(visible);
     getWebDriver().navigate().back();
 
     $(By.linkText("Hangman game"))
