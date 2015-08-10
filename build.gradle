@@ -19,9 +19,8 @@ repositories{
 }
 
 dependencies {
-  testCompile 'com.codeborne:selenide:2.20'
+  testCompile 'com.codeborne:selenide:2.21'
   testCompile 'junit:junit:4.12'
-  testRuntime group: 'org.seleniumhq.selenium', name: 'selenium-htmlunit-driver', version: '2.46.0'
 }
 
 task libs(type: Sync) {
@@ -40,5 +39,5 @@ test {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.5'
+    gradleVersion = '2.6'
 }
