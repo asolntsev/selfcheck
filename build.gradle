@@ -13,13 +13,10 @@ sourceSets {
 
 repositories{
   mavenCentral()
-//  maven {
-//      url "https://oss.sonatype.org/content/repositories/snapshots/"
-//  }
 }
 
 dependencies {
-  testCompile 'com.codeborne:selenide:2.21'
+  testCompile 'com.codeborne:selenide:2.22'
   testCompile 'junit:junit:4.12'
 }
 
