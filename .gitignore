@@ -3,4 +3,4 @@
 build
 out
 chromedriver.log
-.gradle/2.4
+.gradle/2.6
