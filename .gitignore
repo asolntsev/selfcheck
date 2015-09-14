@@ -1,6 +1,5 @@
 .idea
-*.iml
 build
 out
 chromedriver.log
-.gradle/2.6
+.gradle/2.7
