@@ -16,7 +16,7 @@ repositories{
 }
 
 dependencies {
-  testCompile 'com.codeborne:selenide:2.22'
+  testCompile 'com.codeborne:selenide:2.23'
   testCompile 'junit:junit:4.12'
 }
 
@@ -36,5 +36,5 @@ test {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.7'
+    gradleVersion = '2.8'
 }
