@@ -2,6 +2,7 @@ package selfcheck;
 
 import com.codeborne.selenide.junit.ScreenShooter;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -15,6 +16,7 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.junit.ScreenShooter.failedTests;
 
+@Ignore
 public class TasksCodeborneCheck {
   @Rule
   public ScreenShooter screenShooter = failedTests();
