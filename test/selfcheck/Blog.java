@@ -1,15 +1,11 @@
 package selfcheck;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Selenide;
 import org.junit.Before;
 import org.junit.Test;
 
 import static com.codeborne.selenide.CollectionCondition.texts;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.*;
 
 public class Blog {
   @Before
@@ -19,10 +15,10 @@ public class Blog {
 
   @Test
   public void canSwitchEnglishAndRussian() {
-    $("#lang_rus").shouldHave(text("RUS")).click();
+    $("#languages").find(byText("RUS")).click();
     $$(".sidebar-nav .sidebar-nav-item").shouldHave(texts("Blog", "Обо мне", "Опен-сорс", "Видео"));
-    
-    $("#lang_eng").shouldHave(text("ENG")).click();
+
+    $("#languages").find(byText("ENG")).click();
     $$(".sidebar-nav .sidebar-nav-item").shouldHave(texts("Blog", "About", "Open source", "My videos"));
   }
 }
