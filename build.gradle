@@ -1,5 +1,5 @@
 apply plugin: 'java'
-defaultTasks 'clean', 'libs', 'test'
+defaultTasks 'clean', 'test'
 sourceSets {
   main {
     java {srcDir 'src'}
@@ -25,6 +25,8 @@ task libs(type: Sync) {
   from configurations.testRuntime
   into "$buildDir/lib"
 }
+
+compileJava.dependsOn libs
 
 [compileJava, compileTestJava]*.options.collect {options -> options.encoding = 'UTF-8'}
 [compileJava, compileTestJava]*.options.collect {options -> options.debug = true}
