@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "3.4";
+  private static final String LAST_SELENIDE_VERSION = "3.5";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
