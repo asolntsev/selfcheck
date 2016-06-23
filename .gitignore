@@ -2,4 +2,4 @@
 build
 out
 chromedriver.log
-.gradle/2.13
+.gradle/2.*
