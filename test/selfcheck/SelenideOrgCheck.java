@@ -1,5 +1,6 @@
 package selfcheck;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.junit.ScreenShooter;
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,6 +13,7 @@ import java.util.Enumeration;
 import java.util.jar.JarFile;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Configuration.FileDownloadMode.HTTPGET;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -28,6 +30,7 @@ public class SelenideOrgCheck {
 
   @Before
   public void openPage() {
+    Configuration.fileDownload = HTTPGET;
     open("http://selenide.org");
   }
 
