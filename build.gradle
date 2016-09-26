@@ -33,7 +33,7 @@ compileJava.dependsOn libs
 
 test {
   systemProperties 'file.encoding': 'UTF-8'
-  systemProperties['browser'] = 'chrome'
+  systemProperties['browser'] = 'htmlunit'
   testLogging.showStandardStreams = true
 }
 
