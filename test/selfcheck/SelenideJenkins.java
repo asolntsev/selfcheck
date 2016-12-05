@@ -22,6 +22,7 @@ public class SelenideJenkins {
   private void checkJob(final String jobName) {
     $("#job_" + jobName)
         .shouldBe(visible)
+        .scrollTo()
         .shouldHave(text(jobName), cssClass("job-status-blue"));
   }
 }
