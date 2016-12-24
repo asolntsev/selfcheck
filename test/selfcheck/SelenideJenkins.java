@@ -12,7 +12,6 @@ public class SelenideJenkins {
     open("https://ci.selenide.org");
     checkJob("selenide");
     checkJob("examples-cucumber");
-    checkJob("examples-cucumber-chrome");
     checkJob("geoip");
     checkJob("xls-test");
     checkJob("selenide-appium");
