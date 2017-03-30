@@ -13,7 +13,7 @@ import java.util.Enumeration;
 import java.util.jar.JarFile;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Configuration.FileDownloadMode.HTTPGET;
+import static com.codeborne.selenide.Configuration.FileDownloadMode.PROXY;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -23,14 +23,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "4.3";
+  private static final String LAST_SELENIDE_VERSION = "4.4.1";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
 
   @Before
   public void openPage() {
-    Configuration.fileDownload = HTTPGET;
+    Configuration.fileDownload = PROXY;
     open("http://selenide.org");
   }
 
@@ -43,7 +43,7 @@ public class SelenideOrgCheck {
   @Test
   public void checkSelenideJarLink() throws IOException {
     $(By.linkText("selenide.jar")).shouldHave(
-        attribute("href", "http://search.maven.org/remotecontent?filepath=" +
+        attribute("href", "https://search.maven.org/remotecontent?filepath=" +
             "com/codeborne/selenide/"+LAST_SELENIDE_VERSION+"/selenide-"+LAST_SELENIDE_VERSION+".jar"));
     File selenideJar = $(By.linkText("selenide.jar")).download();
     assertEquals("selenide-" + LAST_SELENIDE_VERSION + ".jar", selenideJar.getName());
