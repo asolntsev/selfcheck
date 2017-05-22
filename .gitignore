@@ -2,4 +2,5 @@
 build
 out
 chromedriver.log
+.gradle/buildOutputCleanup
 .gradle/3.*
