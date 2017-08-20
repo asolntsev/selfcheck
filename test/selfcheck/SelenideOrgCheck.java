@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "4.5";
+  private static final String LAST_SELENIDE_VERSION = "4.5.1";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
@@ -46,6 +46,7 @@ public class SelenideOrgCheck {
         attribute("href", "https://search.maven.org/remotecontent?filepath=" +
             "com/codeborne/selenide/"+LAST_SELENIDE_VERSION+"/selenide-"+LAST_SELENIDE_VERSION+".jar"));
     File selenideJar = $(By.linkText("selenide.jar")).download();
+
     assertEquals("selenide-" + LAST_SELENIDE_VERSION + ".jar", selenideJar.getName());
     JarFile jarFile = new JarFile(selenideJar);
     Enumeration en = jarFile.entries();
@@ -62,7 +63,7 @@ public class SelenideOrgCheck {
     $(By.linkText("Selenide examples"))
       .shouldHave(attribute("href", "https://github.com/selenide-examples"))
       .click();
-    $(".org-name").shouldHave(text("selenide-examples")).shouldBe(visible);
+    $(".org-name").shouldHave(text("Selenide examples")).shouldBe(visible);
     getWebDriver().navigate().back();
 
     $(By.linkText("Hangman game"))
