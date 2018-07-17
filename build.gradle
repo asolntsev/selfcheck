@@ -37,7 +37,3 @@ test {
   systemProperties['BUILD_URL'] = System.getenv()['BUILD_URL']
   testLogging.showStandardStreams = true
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.8.1'
-}
