@@ -16,6 +16,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Configuration.FileDownloadMode.PROXY;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.close;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static com.codeborne.selenide.junit.ScreenShooter.failedTests;
@@ -23,14 +24,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "4.13.0";
+  private static final String LAST_SELENIDE_VERSION = "4.14.0";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
 
   @Before
   public void openPage() {
-    Configuration.fileDownload = PROXY;
+    if (Configuration.fileDownload != PROXY) {
+      close();
+      Configuration.fileDownload = PROXY;
+    }
     open("http://selenide.org");
   }
 
