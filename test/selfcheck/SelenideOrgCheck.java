@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "4.14.0";
+  private static final String LAST_SELENIDE_VERSION = "4.14.1";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
@@ -79,7 +79,7 @@ public class SelenideOrgCheck {
 
   @Test
   public void checkSeleniumWebDriverLink() {
-    $(By.linkText("Selenium WebDriver")).shouldHave(attribute("href", "http://docs.seleniumhq.org/projects/webdriver/"));
+    $(By.linkText("Selenium WebDriver")).shouldHave(attribute("href", "https://docs.seleniumhq.org/projects/webdriver/"));
 //    $(By.linkText("Selenium WebDriver")).click();
 //    $("h1").shouldHave(text("Selenium WebDriver"));
 //    getWebDriver().navigate().back();
