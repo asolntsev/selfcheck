@@ -2,6 +2,4 @@
 build
 out
 chromedriver.log
-.gradle/4.*
-.gradle/buildOutputCleanup
-.gradle/vcsWorkingDirs
+.gradle
