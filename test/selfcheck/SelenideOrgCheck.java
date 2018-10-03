@@ -13,7 +13,7 @@ import java.util.Enumeration;
 import java.util.jar.JarFile;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Configuration.FileDownloadMode.PROXY;
+import static com.codeborne.selenide.FileDownloadMode.PROXY;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.close;
@@ -35,6 +35,7 @@ public class SelenideOrgCheck {
       close();
       Configuration.fileDownload = PROXY;
     }
+    Configuration.proxyEnabled = true;
     open("http://selenide.org");
   }
 
