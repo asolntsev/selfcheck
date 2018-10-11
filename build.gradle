@@ -20,7 +20,7 @@ repositories{
 }
 
 dependencies {
-  testCompile 'com.codeborne:selenide:5.0.0-rc.2'
+  testCompile 'com.codeborne:selenide:5.0.0'
   testCompile 'junit:junit:4.12'
 }
 
