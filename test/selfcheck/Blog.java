@@ -16,7 +16,7 @@ public class Blog {
   @Test
   public void canSwitchEnglishAndRussian() {
     $("#languages").find(byText("RUS")).click();
-    $$(".sidebar-nav .sidebar-nav-item").shouldHave(texts("Blog", "Обо мне", "Опен-сорс", "Видео"));
+    $$(".sidebar-nav .sidebar-nav-item").shouldHave(texts("Blog", "Обо мне", "Опен-сорс", "Публикации", "Видео"));
 
     $("#languages").find(byText("ENG")).click();
     $$(".sidebar-nav .sidebar-nav-item").shouldHave(texts("Blog", "About", "Open source", "My videos"));
