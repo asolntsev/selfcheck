@@ -19,6 +19,6 @@ public class Blog {
     $$(".sidebar-nav .sidebar-nav-item").shouldHave(texts("Blog", "Обо мне", "Опен-сорс", "Публикации", "Видео"));
 
     $("#languages").find(byText("ENG")).click();
-    $$(".sidebar-nav .sidebar-nav-item").shouldHave(texts("Blog", "About", "Open source", "My videos"));
+    $$(".sidebar-nav .sidebar-nav-item").shouldHave(texts("Blog", "About", "Open source", "Publications", "My videos"));
   }
 }
