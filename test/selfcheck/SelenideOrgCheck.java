@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.jar.JarFile;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.attribute;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.FileDownloadMode.PROXY;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
@@ -24,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "5.1.0";
+  private static final String LAST_SELENIDE_VERSION = "5.2.3";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
