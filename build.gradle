@@ -18,7 +18,7 @@ repositories{
 
 dependencies {
   testCompile 'com.codeborne:selenide:5.2.4'
-  testCompile 'org.seleniumhq.selenium:htmlunit-driver:2.34.0'
+  testCompile 'org.seleniumhq.selenium:htmlunit-driver:2.35.1'
   testCompile 'junit:junit:4.12'
 }
 
