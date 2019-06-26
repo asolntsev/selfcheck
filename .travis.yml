@@ -10,3 +10,5 @@ services:
   - xvfb
 
 script: "./gradlew clean test"
+
+after_script: "./.upload_reports.sh"
