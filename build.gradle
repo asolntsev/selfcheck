@@ -19,6 +19,7 @@ repositories{
 dependencies {
   testCompile 'com.codeborne:selenide:5.3.0'
   testCompile 'junit:junit:4.12'
+  //testCompile group: 'com.automation-remarks', name: 'video-recorder-junit', version: '2.0'
 }
 
 task libs(type: Sync) {
@@ -34,7 +35,7 @@ compileJava.dependsOn libs
 
 test {
   systemProperties 'file.encoding': 'UTF-8'
-  systemProperties 'selenide.browser': 'firefox'
+  systemProperties 'selenide.browser': 'chrome'
   systemProperties 'selenide.headless': true
   systemProperties 'selenide.pageLoadStrategy': 'none'
   systemProperties['BUILD_URL'] = System.getenv()['BUILD_URL']

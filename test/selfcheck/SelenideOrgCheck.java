@@ -18,9 +18,9 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.FileDownloadMode.PROXY;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.back;
 import static com.codeborne.selenide.Selenide.close;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.junit.ScreenShooter.failedTests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -38,21 +38,24 @@ public class SelenideOrgCheck {
       Configuration.fileDownload = PROXY;
     }
     Configuration.proxyEnabled = true;
-    open("http://selenide.org");
   }
 
   @Test
   public void selenideOrg() {
+    open("http://selenide.org");
     $(".main-menu-pages li").shouldHave(text("Quick start"));
     $(".short").shouldHave(text("What is Selenide?"));
   }
 
   @Test
   public void checkSelenideJarLink() throws IOException {
-    $(By.linkText("selenide.jar")).shouldHave(
-        attribute("href", "https://search.maven.org/remotecontent?filepath=" +
-            "com/codeborne/selenide/"+LAST_SELENIDE_VERSION+"/selenide-"+LAST_SELENIDE_VERSION+".jar"));
-    File selenideJar = $(By.linkText("selenide.jar")).download();
+    open("http://selenide.org");
+    sleep(2000); // wait until page gets loaded (with all that disquss and video)
+    String expectedHref = String.format("https://search.maven.org/remotecontent?filepath=com/codeborne/selenide/%s/selenide-%s.jar", LAST_SELENIDE_VERSION, LAST_SELENIDE_VERSION);
+    File selenideJar = $(By.linkText("selenide.jar"))
+        .shouldHave(attribute("href", expectedHref))
+        .scrollTo()
+        .download();
 
     assertEquals("selenide-" + LAST_SELENIDE_VERSION + ".jar", selenideJar.getName());
     JarFile jarFile = new JarFile(selenideJar);
@@ -61,30 +64,46 @@ public class SelenideOrgCheck {
   }
 
   @Test
-  public void checkQuickGuideLink() throws IOException {
+  public void checkQuickGuideLink() {
+    open("http://selenide.org");
     $(By.linkText("Quick start")).click();
     $("body").find(byText("Quick start")).shouldBe(visible);
-    checkSelenideJarLink();
-    $("code", 1).shouldHave(text("<dependency org=\"com.codeborne\" name=\"selenide\" rev=\""+LAST_SELENIDE_VERSION+"\"/>"));
-
-    $(By.linkText("Selenide examples"))
-      .shouldHave(attribute("href", "https://github.com/selenide-examples"))
-      .click();
-    $(".org-header-wrapper").shouldHave(text("Selenide examples")).shouldBe(visible);
-    back();
-
-    $(By.linkText("Hangman game"))
-      .shouldHave(attribute("href", "https://github.com/selenide-examples/hangman/blob/master/test/uitest/selenide/HangmanSpec.java"))
-      .click();
-    $(".final-path").shouldHave(text("HangmanSpec.java"));
-    $(".highlight").shouldHave(text("public class HangmanSpec"));
   }
 
   @Test
-  public void checkSeleniumWebDriverLink() {
-    $(By.linkText("Selenium WebDriver")).shouldHave(attribute("href", "https://docs.seleniumhq.org/projects/webdriver/"));
-//    $(By.linkText("Selenium WebDriver")).click();
-//    $("h1").shouldHave(text("Selenium WebDriver"));
-//    getWebDriver().navigate().back();
+  public void quickGuide_downloadSelenideJar() throws IOException {
+    open("https://selenide.org/quick-start.html");
+
+    $("body").find(byText("Quick start")).shouldBe(visible);
+    checkSelenideJarLink();
+  }
+
+  @Test
+  public void quickGuide_gradleDependency() {
+    open("https://selenide.org/quick-start.html");
+
+    $("code", 1).shouldHave(text("<dependency org=\"com.codeborne\" name=\"selenide\" rev=\"" + LAST_SELENIDE_VERSION + "\"/>"));
+  }
+
+  @Test
+  public void quickGuide_selenideExamples() {
+    open("https://selenide.org/quick-start.html");
+
+    $(By.linkText("Selenide examples"))
+        .shouldHave(attribute("href", "https://github.com/selenide-examples"))
+        .click();
+    $(".org-header-wrapper").shouldHave(text("Selenide examples")).shouldBe(visible);
+  }
+
+  @Test
+  public void quickGuide_hangmanExample() {
+    open("https://selenide.org/quick-start.html");
+
+    $(By.linkText("Hangman game"))
+      .shouldHave(attribute("href", "https://github.com/selenide-examples/hangman/blob/master/test/uitest/selenide/HangmanSpec.java"))
+      .scrollTo()
+      .click();
+    $(".final-path").shouldHave(text("HangmanSpec.java"));
+    $(".highlight").shouldHave(text("public class HangmanSpec"));
   }
 }
