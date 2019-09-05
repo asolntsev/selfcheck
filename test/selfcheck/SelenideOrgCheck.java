@@ -18,15 +18,15 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.FileDownloadMode.PROXY;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.back;
 import static com.codeborne.selenide.Selenide.close;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static com.codeborne.selenide.junit.ScreenShooter.failedTests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "5.2.8";
+  private static final String LAST_SELENIDE_VERSION = "5.3.0";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
@@ -70,8 +70,8 @@ public class SelenideOrgCheck {
     $(By.linkText("Selenide examples"))
       .shouldHave(attribute("href", "https://github.com/selenide-examples"))
       .click();
-    $(".org-name").shouldHave(text("Selenide examples")).shouldBe(visible);
-    getWebDriver().navigate().back();
+    $(".org-header-wrapper").shouldHave(text("Selenide examples")).shouldBe(visible);
+    back();
 
     $(By.linkText("Hangman game"))
       .shouldHave(attribute("href", "https://github.com/selenide-examples/hangman/blob/master/test/uitest/selenide/HangmanSpec.java"))
