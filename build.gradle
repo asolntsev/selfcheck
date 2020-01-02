@@ -18,7 +18,7 @@ repositories{
 
 dependencies {
   testCompile 'com.codeborne:selenide:5.5.1'
-  testCompile 'junit:junit:4.12'
+  testCompile 'junit:junit:4.13'
   //testCompile group: 'com.automation-remarks', name: 'video-recorder-junit', version: '2.0'
 }
 
