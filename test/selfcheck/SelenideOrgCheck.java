@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "5.6.1";
+  private static final String LAST_SELENIDE_VERSION = "5.7.0";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
@@ -42,14 +42,14 @@ public class SelenideOrgCheck {
 
   @Test
   public void selenideOrg() {
-    open("http://selenide.org");
+    open("https://selenide.org");
     $(".main-menu-pages li").shouldHave(text("Quick start"));
     $(".short").shouldHave(text("What is Selenide?"));
   }
 
   @Test
   public void checkSelenideJarLink() throws IOException {
-    open("http://selenide.org");
+    open("https://selenide.org");
     sleep(2000); // wait until page gets loaded (with all that disquss and video)
     String expectedHref = String.format("https://search.maven.org/remotecontent?filepath=com/codeborne/selenide/%s/selenide-%s.jar", LAST_SELENIDE_VERSION, LAST_SELENIDE_VERSION);
     File selenideJar = $(By.linkText("selenide.jar"))
@@ -65,7 +65,7 @@ public class SelenideOrgCheck {
 
   @Test
   public void checkQuickGuideLink() {
-    open("http://selenide.org");
+    open("https://selenide.org");
     $(By.linkText("Quick start")).click();
     $("body").find(byText("Quick start")).shouldBe(visible);
   }
