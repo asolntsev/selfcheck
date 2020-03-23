@@ -21,12 +21,13 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.files.FileFilters.withNameMatching;
 import static com.codeborne.selenide.junit.ScreenShooter.failedTests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "5.9.0";
+  private static final String LAST_SELENIDE_VERSION = "5.10.0";
 
   @Rule
   public ScreenShooter screenShooter = failedTests();
@@ -55,7 +56,7 @@ public class SelenideOrgCheck {
     File selenideJar = $(By.linkText("selenide.jar"))
         .shouldHave(attribute("href", expectedHref))
         .scrollTo()
-        .download();
+        .download(withNameMatching("selenide.*jar"));
 
     assertEquals("selenide-" + LAST_SELENIDE_VERSION + ".jar", selenideJar.getName());
     JarFile jarFile = new JarFile(selenideJar);
