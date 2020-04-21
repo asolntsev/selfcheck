@@ -1,6 +1,8 @@
 package selfcheck;
 
+import com.codeborne.selenide.junit.TextReport;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static com.codeborne.selenide.CollectionCondition.texts;
