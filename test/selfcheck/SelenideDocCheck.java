@@ -23,6 +23,7 @@ import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 import static java.lang.System.lineSeparator;
 import static java.util.Arrays.asList;
+import static org.apache.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.junit.Assert.fail;
@@ -74,7 +75,7 @@ public class SelenideDocCheck {
       HttpResponse response = client.execute(new HttpHead(href));
       int statusCode = response.getStatusLine().getStatusCode();
       System.out.println(statusCode);
-      if (statusCode != SC_OK && statusCode != SC_NO_CONTENT) {
+      if (!isOK(href, statusCode)) {
         brokenLinks.add(href + " -> " + statusCode);
       }
     }
@@ -82,5 +83,10 @@ public class SelenideDocCheck {
     if (!brokenLinks.isEmpty()) {
       fail("Found broken links: " + brokenLinks.stream().collect(Collectors.joining(lineSeparator())));
     }
+  }
+
+  private boolean isOK(String href, int statusCode) {
+    return statusCode == SC_OK || statusCode == SC_NO_CONTENT ||
+        (href.startsWith("https://vimeo.com") && statusCode == SC_FORBIDDEN);
   }
 }
