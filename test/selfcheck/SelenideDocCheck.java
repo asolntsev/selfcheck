@@ -12,6 +12,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -69,14 +70,19 @@ public class SelenideDocCheck {
 
     for (SelenideElement link : links) {
       String href = link.attr("href");
-      if (href == null || href.startsWith("mailto:")) continue;
+      if (href == null || href.startsWith("mailto:") || href.contains("://staging-server.com")) continue;
 
       System.out.print("  Checking " + href + " [" + link.text() + "] ... ");
-      HttpResponse response = client.execute(new HttpHead(href));
-      int statusCode = response.getStatusLine().getStatusCode();
-      System.out.println(statusCode);
-      if (!isOK(href, statusCode)) {
-        brokenLinks.add(href + " -> " + statusCode);
+      try {
+        HttpResponse response = client.execute(new HttpHead(href));
+        int statusCode = response.getStatusLine().getStatusCode();
+        System.out.println(statusCode);
+        if (!isOK(href, statusCode)) {
+          brokenLinks.add(href + " -> " + statusCode);
+        }
+      }
+      catch (UnknownHostException e) {
+        brokenLinks.add(href + " -> " + e);
       }
     }
     System.out.println("All links on " + page + " are checked");
