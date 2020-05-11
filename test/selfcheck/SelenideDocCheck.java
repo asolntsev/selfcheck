@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.CollectionCondition.size;
@@ -32,6 +34,8 @@ import static org.junit.Assert.fail;
 @RunWith(Parameterized.class)
 public class SelenideDocCheck {
   private final HttpClient client = HttpClientBuilder.create().build();
+
+  private static final Set<String> checked = new HashSet<>(3000);
 
   @Parameters
   public static Collection<Object[]> data() {
@@ -73,11 +77,18 @@ public class SelenideDocCheck {
       if (href == null || href.startsWith("mailto:") || href.contains("://staging-server.com")) continue;
 
       System.out.print("  Checking " + href + " [" + link.text() + "] ... ");
+      if (checked.contains(href)) {
+        brokenLinks.add("ok (cached)");
+        continue;
+      }
       try {
         HttpResponse response = client.execute(new HttpHead(href));
         int statusCode = response.getStatusLine().getStatusCode();
         System.out.println(statusCode);
-        if (!isOK(href, statusCode)) {
+        if (isOK(href, statusCode)) {
+          checked.add(href);
+        }
+        else {
           brokenLinks.add(href + " -> " + statusCode);
         }
       }
