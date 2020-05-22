@@ -23,7 +23,7 @@ repositories{
 }
 
 dependencies {
-  testCompile 'com.codeborne:selenide:5.11.1'
+  testCompile 'com.codeborne:selenide:5.12.0'
   testRuntime 'com.browserup:browserup-proxy-core:2.1.0'
   testCompile 'junit:junit:4.13'
   testRuntime 'org.slf4j:slf4j-simple:1.7.30'

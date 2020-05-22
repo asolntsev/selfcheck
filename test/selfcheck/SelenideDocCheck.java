@@ -2,10 +2,10 @@ package selfcheck;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpHead;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.core5.http.HttpResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -26,9 +26,9 @@ import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 import static java.lang.System.lineSeparator;
 import static java.util.Arrays.asList;
-import static org.apache.http.HttpStatus.SC_FORBIDDEN;
-import static org.apache.http.HttpStatus.SC_NO_CONTENT;
-import static org.apache.http.HttpStatus.SC_OK;
+import static org.apache.hc.core5.http.HttpStatus.SC_FORBIDDEN;
+import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
+import static org.apache.hc.core5.http.HttpStatus.SC_OK;
 import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
@@ -78,12 +78,11 @@ public class SelenideDocCheck {
 
       System.out.print("  Checking " + href + " [" + link.text() + "] ... ");
       if (checked.contains(href)) {
-        brokenLinks.add("ok (cached)");
         continue;
       }
       try {
         HttpResponse response = client.execute(new HttpHead(href));
-        int statusCode = response.getStatusLine().getStatusCode();
+        int statusCode = response.getCode();
         System.out.println(statusCode);
         if (isOK(href, statusCode)) {
           checked.add(href);
