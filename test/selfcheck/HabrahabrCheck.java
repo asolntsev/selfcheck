@@ -1,6 +1,7 @@
 package selfcheck;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.attribute;
@@ -8,6 +9,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
+@ExtendWith({LogTestNameExtension.class})
 public class HabrahabrCheck {
   @Test
   public void selenideArticle() {

@@ -1,10 +1,10 @@
 package selfcheck;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.junit.ScreenShooter;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import com.codeborne.selenide.junit5.ScreenShooterExtension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 
 import java.io.File;
@@ -22,17 +22,13 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.files.FileFilters.withNameMatching;
-import static com.codeborne.selenide.junit.ScreenShooter.failedTests;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith({LogTestNameExtension.class, ScreenShooterExtension.class})
 public class SelenideOrgCheck {
   private static final String LAST_SELENIDE_VERSION = "5.12.2";
 
-  @Rule
-  public ScreenShooter screenShooter = failedTests();
-
-  @Before
+  @BeforeEach
   public void openPage() {
     if (Configuration.fileDownload != PROXY) {
       closeWebDriver();
@@ -58,10 +54,10 @@ public class SelenideOrgCheck {
         .scrollTo()
         .download(withNameMatching("selenide.*jar"));
 
-    assertEquals("selenide-" + LAST_SELENIDE_VERSION + ".jar", selenideJar.getName());
+    assertThat(selenideJar.getName()).isEqualTo("selenide-" + LAST_SELENIDE_VERSION + ".jar");
     JarFile jarFile = new JarFile(selenideJar);
     Enumeration en = jarFile.entries();
-    assertTrue("selenide.jar is empty", en.hasMoreElements());
+    assertThat(en.hasMoreElements()).as("selenide.jar is empty").isTrue();
   }
 
   @Test

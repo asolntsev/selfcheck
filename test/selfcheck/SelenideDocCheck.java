@@ -6,15 +6,13 @@ import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpHead;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.core5.http.HttpResponse;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,43 +23,39 @@ import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 import static java.lang.System.lineSeparator;
-import static java.util.Arrays.asList;
 import static org.apache.hc.core5.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.hc.core5.http.HttpStatus.SC_OK;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
-@RunWith(Parameterized.class)
+@ExtendWith({LogTestNameExtension.class})
 public class SelenideDocCheck {
   private final HttpClient client = HttpClientBuilder.create().build();
 
   private static final Set<String> checked = new HashSet<>(3000);
 
-  @Parameters
-  public static Collection<Object[]> data() {
-    return asList(new Object[][]{
-        {"https://ru.selenide.org/quick-start.html"},
-        {"https://ru.selenide.org/documentation/screenshots.html"},
-        {"https://ru.selenide.org/documentation/selenide-vs-selenium.html"},
-        {"https://ru.selenide.org/blog.html"},
-        {"https://ru.selenide.org/javadoc.html"},
-        {"https://ru.selenide.org/users.html"},
-        {"https://ru.selenide.org/documentation.html"},
-        {"https://selenide.org/quick-start.html"},
-        {"https://selenide.org/documentation/screenshots.html"},
-        {"https://selenide.org/documentation/selenide-vs-selenium.html"},
-        {"https://selenide.org/blog.html"},
-        {"https://selenide.org/javadoc.html"},
-        {"https://selenide.org/users.html"},
-        {"https://selenide.org/documentation.html"}
-    });
+  private static String[] urls() {
+    return new String[]{
+        "https://ru.selenide.org/quick-start.html",
+        "https://ru.selenide.org/documentation/screenshots.html",
+        "https://ru.selenide.org/documentation/selenide-vs-selenium.html",
+        "https://ru.selenide.org/blog.html",
+        "https://ru.selenide.org/javadoc.html",
+        "https://ru.selenide.org/users.html",
+        "https://ru.selenide.org/documentation.html",
+        "https://selenide.org/quick-start.html",
+        "https://selenide.org/documentation/screenshots.html",
+        "https://selenide.org/documentation/selenide-vs-selenium.html",
+        "https://selenide.org/blog.html",
+        "https://selenide.org/javadoc.html",
+        "https://selenide.org/users.html",
+        "https://selenide.org/documentation.html"
+    };
   }
 
-  private final String page;
-  public SelenideDocCheck(String page) {this.page = page;}
-
-  @Test
-  public void checkAllLinks() throws IOException {
+  @ParameterizedTest
+  @MethodSource("urls")
+  public void checkAllLinks(String page) throws IOException {
     System.out.println("Checking links on " + page + " ...");
     open("about:blank");
     $$("a").shouldHave(size(0));

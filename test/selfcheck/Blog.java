@@ -1,16 +1,18 @@
 package selfcheck;
 
-import com.codeborne.selenide.junit.TextReport;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.codeborne.selenide.CollectionCondition.texts;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.open;
 
+@ExtendWith({LogTestNameExtension.class})
 public class Blog {
-  @Before
+  @BeforeEach
   public void setUp() {
     open("https://asolntsev.github.io/");
   }

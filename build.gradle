@@ -25,7 +25,9 @@ repositories{
 dependencies {
   testCompile 'com.codeborne:selenide:5.13.0'
   testRuntime 'com.browserup:browserup-proxy-core:2.1.1'
-  testCompile 'junit:junit:4.13'
+  testCompile 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+  testCompile 'org.junit.jupiter:junit-jupiter-params:5.6.2'
+  testCompile 'org.assertj:assertj-core:3.16.1'
   testRuntime 'org.slf4j:slf4j-simple:1.7.30'
   //testCompile group: 'com.automation-remarks', name: 'video-recorder-junit', version: '2.0'
 }
@@ -42,6 +44,7 @@ compileJava.dependsOn libs
 [compileJava, compileTestJava]*.options.collect {options -> options.debug = true}
 
 test {
+  useJUnitPlatform()
   systemProperties 'file.encoding': 'UTF-8'
   systemProperties 'selenide.browser': 'chrome'
   systemProperties 'selenide.headless': true
