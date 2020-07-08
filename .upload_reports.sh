@@ -18,7 +18,8 @@ cd ${ARTIFACTS_DIR}
 tar -zcf ${ARTIFACTS_FILE} *
 
 echo "Uploading build artifacts"
-curl --upload-file ${ARTIFACTS_FILE} https://transfer.sh/
+#curl --upload-file ${ARTIFACTS_FILE} https://transfer.sh/
+curl -F "file=@${ARTIFACTS_FILE}" -s -w "\n" https://file.io
 if [ $TRAVIS_TEST_RESULT -eq 0 ];
 then
 	echo -e ${SUCCESS_MESSAGE}
