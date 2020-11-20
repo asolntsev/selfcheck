@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith({LogTestNameExtension.class, ScreenShooterExtension.class})
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "5.14.2";
+  private static final String LAST_SELENIDE_VERSION = "5.16.0";
 
   @BeforeEach
   public void openPage() {
