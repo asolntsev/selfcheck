@@ -3,13 +3,15 @@ package selfcheck;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpHead;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.hc.core5.http.HttpResponse;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 import static java.lang.System.lineSeparator;
 import static org.apache.hc.core5.http.HttpStatus.SC_FORBIDDEN;
+import static org.apache.hc.core5.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
 import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.hc.core5.http.HttpStatus.SC_OK;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -75,15 +78,11 @@ public class SelenideDocCheck {
         continue;
       }
       try {
-        HttpResponse response = client.execute(new HttpHead(href));
-        int statusCode = response.getCode();
+        int statusCode = checkLink(brokenLinks, href);
         System.out.println(statusCode);
-        if (isOK(href, statusCode)) {
-          checked.add(href);
-        }
-        else {
-          brokenLinks.add(href + " -> " + statusCode);
-        }
+      }
+      catch (SSLException e) {
+        System.out.println("SSL Error");
       }
       catch (UnknownHostException e) {
         brokenLinks.add(href + " -> " + e);
@@ -93,6 +92,27 @@ public class SelenideDocCheck {
     if (!brokenLinks.isEmpty()) {
       fail("Found broken links: " + brokenLinks.stream().collect(Collectors.joining(lineSeparator())));
     }
+  }
+
+  private int executeHttpRequest(HttpUriRequestBase request) throws IOException {
+    request.setHeader("user-agent", USER_AGENT);
+    return client.execute(request).getCode();
+  }
+
+  private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0";
+
+  private int checkLink(List<String> brokenLinks, String href) throws IOException {
+    int statusCode = executeHttpRequest(new HttpHead(href));
+    if (statusCode == SC_METHOD_NOT_ALLOWED) {
+      statusCode = executeHttpRequest(new HttpGet(href));
+    }
+    if (isOK(href, statusCode)) {
+      checked.add(href);
+    }
+    else {
+      brokenLinks.add(href + " -> " + statusCode);
+    }
+    return statusCode;
   }
 
   private boolean isOK(String href, int statusCode) {

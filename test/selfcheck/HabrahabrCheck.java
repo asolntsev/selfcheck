@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Condition.attribute;
+import static com.codeborne.selenide.Condition.href;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -13,12 +13,12 @@ import static com.codeborne.selenide.Selenide.open;
 public class HabrahabrCheck {
   @Test
   public void selenideArticle() {
-    open("http://habrahabr.ru/post/143269/");
+    open("https://habrahabr.ru/post/143269/");
     $(".post__title").shouldHave(text("Selenide: удобные тесты на Selenium WebDriver"));
-    $(By.linkText("Selenium WebDriver")).shouldHave(attribute("href", "http://code.google.com/p/selenium/"));
-    $(By.linkText("Selenide"), 0).shouldHave(attribute("href", "http://ru.selenide.org/"));
-    $(By.linkText("Selenide"), 1).shouldHave(attribute("href", "http://ru.selenide.org/"));
-    $(By.linkText("в нашей фирме")).shouldHave(attribute("href", "https://codeborne.com/ru/"));
-    $(By.linkText("игра Виселица")).shouldHave(attribute("href", "https://github.com/asolntsev/hangman"));
+    $(By.linkText("Selenium WebDriver")).shouldHave(href("//code.google.com/p/selenium/"));
+    $(By.linkText("Selenide"), 0).shouldHave(href("//ru.selenide.org/"));
+    $(By.linkText("Selenide"), 1).shouldHave(href("//ru.selenide.org/"));
+    $(By.linkText("в нашей фирме")).shouldHave(href("//codeborne.com/ru/"));
+    $(By.linkText("игра Виселица")).shouldHave(href("//github.com/selenide-examples/hangman"));
   }
 }
