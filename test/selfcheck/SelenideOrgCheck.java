@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.jar.JarFile;
 
+import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -88,7 +89,7 @@ public class SelenideOrgCheck {
 
     $(By.linkText("Selenide examples"))
         .shouldHave(attribute("href", "https://github.com/selenide-examples"))
-        .click();
+        .click(usingJavaScript());
     $(".org-header-wrapper").shouldHave(text("Selenide examples")).shouldBe(visible);
   }
 
