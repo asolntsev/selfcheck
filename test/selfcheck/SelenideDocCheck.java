@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class SelenideDocCheck {
   private final HttpClient client = HttpClientBuilder.create().build();
 
+  private static final int SC_I_AM_A_TEAPOT = 418;
   private static final Set<String> checked = new HashSet<>(3000);
 
   private static String[] urls() {
@@ -116,7 +117,7 @@ public class SelenideDocCheck {
   }
 
   private boolean isOK(String href, int statusCode) {
-    return statusCode == SC_OK || statusCode == SC_NO_CONTENT ||
+    return statusCode == SC_OK || statusCode == SC_NO_CONTENT || statusCode == SC_I_AM_A_TEAPOT ||
         (href.startsWith("https://vimeo.com") && statusCode == SC_FORBIDDEN);
   }
 }
