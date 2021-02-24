@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith({LogTestNameExtension.class, ScreenShooterExtension.class})
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "5.18.0";
+  private static final String LAST_SELENIDE_VERSION = "5.19.0";
 
   @BeforeEach
   public void openPage() {
@@ -90,7 +90,7 @@ public class SelenideOrgCheck {
     $(By.linkText("Selenide examples"))
         .shouldHave(attribute("href", "https://github.com/selenide-examples"))
         .click(usingJavaScript());
-    $(".org-header-wrapper").shouldHave(text("Selenide examples")).shouldBe(visible);
+    $(".orghead").shouldHave(text("Selenide examples")).shouldBe(visible);
   }
 
   @Test
