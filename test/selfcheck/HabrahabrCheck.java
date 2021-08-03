@@ -14,7 +14,7 @@ public class HabrahabrCheck {
   @Test
   public void selenideArticle() {
     open("https://habrahabr.ru/post/143269/");
-    $(".post__title").shouldHave(text("Selenide: удобные тесты на Selenium WebDriver"));
+    $(".tm-article-snippet__title").shouldHave(text("Selenide: удобные тесты на Selenium WebDriver"));
     $(By.linkText("Selenium WebDriver")).shouldHave(href("//code.google.com/p/selenium/"));
     $(By.linkText("Selenide"), 0).shouldHave(href("//ru.selenide.org/"));
     $(By.linkText("Selenide"), 1).shouldHave(href("//ru.selenide.org/"));
