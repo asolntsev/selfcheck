@@ -23,7 +23,7 @@ repositories{
 }
 
 dependencies {
-  testImplementation 'com.codeborne:selenide:5.23.2'
+  testImplementation 'com.codeborne:selenide:5.23.3'
   testRuntimeOnly 'com.browserup:browserup-proxy-core:2.1.2'
   testRuntimeOnly 'xyz.rogfam:littleproxy:2.0.5'
   testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
