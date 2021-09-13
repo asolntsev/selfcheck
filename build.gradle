@@ -26,7 +26,7 @@ dependencies {
   testImplementation 'com.codeborne:selenide:5.24.2'
   testRuntimeOnly 'com.browserup:browserup-proxy-core:2.1.2'
   testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.0'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.0'
   testImplementation 'org.assertj:assertj-core:3.20.2'
   testRuntimeOnly 'org.slf4j:slf4j-simple:1.7.32'
   //testImplementation group: 'com.automation-remarks', name: 'video-recorder-junit', version: '2.0'
