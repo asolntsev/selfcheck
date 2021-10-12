@@ -28,7 +28,7 @@ dependencies {
     exclude group: 'org.apache.httpcomponents.core5', module: 'httpcore5-h2'
   }
   testRuntimeOnly('com.browserup:browserup-proxy-core:2.1.2') {exclude group: 'io.netty'}
-  testRuntimeOnly("io.netty:netty-all:4.1.68.Final") {because 'used by browserup-proxy'}
+  testRuntimeOnly("io.netty:netty-all:4.1.69.Final") {because 'used by browserup-proxy'}
   testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
   testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
   testImplementation 'org.assertj:assertj-core:3.21.0'
