@@ -80,7 +80,19 @@ public class SelenideOrgCheck {
   public void quickGuide_gradleDependency() {
     open("https://selenide.org/quick-start.html");
 
-    $("code", 1).shouldHave(text("<dependency org=\"com.codeborne\" name=\"selenide\" rev=\"" + LAST_SELENIDE_VERSION + "\"/>"));
+    $("code", 1).shouldHave(text("testImplementation 'com.codeborne:selenide:" + LAST_SELENIDE_VERSION + "'"));
+  }
+
+  @Test
+  public void quickGuide_mavenDependency() {
+    open("https://selenide.org/quick-start.html");
+
+    $("code", 0).shouldHave(text("<dependency>\n" +
+        "    <groupId>com.codeborne</groupId>\n" +
+        "    <artifactId>selenide</artifactId>\n" +
+        "    <version>" + LAST_SELENIDE_VERSION + "</version>\n" +
+        "    <scope>test</scope>\n" +
+        "</dependency>"));
   }
 
   @Test
