@@ -23,12 +23,10 @@ repositories{
 }
 
 dependencies {
-  testImplementation 'com.codeborne:selenide:5.25.0-selenium-4.0.0'
+  testImplementation 'com.codeborne:selenide-proxy:6.0.1'
   testImplementation('org.apache.httpcomponents.client5:httpclient5:5.1') {
     exclude group: 'org.apache.httpcomponents.core5', module: 'httpcore5-h2'
   }
-  testRuntimeOnly('com.browserup:browserup-proxy-core:2.1.2') {exclude group: 'io.netty'}
-  testRuntimeOnly("io.netty:netty-all:4.1.69.Final") {because 'used by browserup-proxy'}
   testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
   testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
   testImplementation 'org.assertj:assertj-core:3.21.0'
