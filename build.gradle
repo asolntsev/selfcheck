@@ -23,7 +23,7 @@ repositories{
 }
 
 dependencies {
-  testImplementation 'com.codeborne:selenide-proxy:6.0.3'
+  testImplementation 'com.codeborne:selenide-proxy:6.1.0'
   testImplementation('org.apache.httpcomponents.client5:httpclient5:5.1.2') {
     exclude group: 'org.apache.httpcomponents.core5', module: 'httpcore5-h2'
   }
