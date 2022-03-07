@@ -25,6 +25,7 @@ import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 import static java.lang.System.lineSeparator;
+import static java.util.Arrays.asList;
 import static org.apache.hc.core5.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.hc.core5.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
 import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
@@ -57,6 +58,18 @@ public class SelenideDocCheck {
     };
   }
 
+  private static final Set<String> forbiddenRussianLinks = new HashSet<>(asList(
+      "ubrr.ru",
+      "alfabank.ru",
+      "rencredit.ru",
+      "severstal.com",
+      "dpi-solutions-ltd-"
+  ));
+
+  private boolean isForbiddenLink(String url) {
+    return forbiddenRussianLinks.stream().anyMatch(link -> url.contains(link));
+  }
+
   @ParameterizedTest
   @MethodSource("urls")
   public void checkAllLinks(String page) throws IOException {
@@ -73,6 +86,7 @@ public class SelenideDocCheck {
     for (SelenideElement link : links) {
       String href = link.attr("href");
       if (href == null || href.startsWith("mailto:") || href.contains("://staging-server.com")) continue;
+      if (isForbiddenLink(href)) continue;
 
       System.out.print("  Checking " + href + " [" + link.text() + "] ... ");
       if (checked.contains(href)) {
