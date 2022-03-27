@@ -63,7 +63,8 @@ public class SelenideDocCheck {
       "alfabank.ru",
       "rencredit.ru",
       "severstal.com",
-      "dpi-solutions-ltd-"
+      "dpi-solutions-ltd-",
+      "bspb.ru"
   ));
 
   private boolean isForbiddenLink(String url) {
