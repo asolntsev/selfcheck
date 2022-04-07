@@ -65,7 +65,8 @@ public class SelenideDocCheck {
       "severstal.com",
       "dpi-solutions-ltd-",
       "bspb.ru",
-      "www.walletone.com"
+      "www.walletone.com",
+      "bellintegrator.ru"
   ));
 
   private boolean isForbiddenLink(String url) {
