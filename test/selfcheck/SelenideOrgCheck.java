@@ -41,7 +41,7 @@ public class SelenideOrgCheck {
   @Test
   public void selenideOrg() {
     open("https://selenide.org");
-    $(".main-menu-pages li").shouldHave(text("Quick start"));
+    $(".main-menu-pages a").shouldHave(text("Quick start"));
     $(".short").shouldHave(text("What is Selenide?"));
   }
 

@@ -30,6 +30,7 @@ import static org.apache.hc.core5.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.hc.core5.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
 import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.hc.core5.http.HttpStatus.SC_OK;
+import static org.apache.hc.core5.http.HttpStatus.SC_SERVER_ERROR;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith({LogTestNameExtension.class})
@@ -59,14 +60,17 @@ public class SelenideDocCheck {
   }
 
   private static final Set<String> forbiddenRussianLinks = new HashSet<>(asList(
-      "ubrr.ru",
-      "alfabank.ru",
-      "rencredit.ru",
-      "severstal.com",
-      "dpi-solutions-ltd-",
-      "bspb.ru",
-      "www.walletone.com",
-      "bellintegrator.ru"
+    "ubrr.ru",
+    "alfabank.ru",
+    "rencredit.ru",
+    "severstal.com",
+    "dpi-solutions-ltd-",
+    "bspb.ru",
+    "www.walletone.com",
+    "bellintegrator.ru",
+    "mir-platform.ru",
+    "rtlabs.ru",
+    "sportmaster.ru"
   ));
 
   private boolean isForbiddenLink(String url) {
@@ -117,7 +121,7 @@ public class SelenideDocCheck {
     return client.execute(request).getCode();
   }
 
-  private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0";
+  private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36";
 
   private int checkLink(List<String> brokenLinks, String href) throws IOException {
     int statusCode = executeHttpRequest(new HttpHead(href));
@@ -135,6 +139,7 @@ public class SelenideDocCheck {
 
   private boolean isOK(String href, int statusCode) {
     return statusCode == SC_OK || statusCode == SC_NO_CONTENT || statusCode == SC_I_AM_A_TEAPOT ||
-        (href.startsWith("https://vimeo.com") && statusCode == SC_FORBIDDEN);
+        (href.startsWith("https://vimeo.com") && statusCode == SC_FORBIDDEN) ||
+        (href.startsWith("https://luminor.ee") && statusCode == SC_SERVER_ERROR);
   }
 }
