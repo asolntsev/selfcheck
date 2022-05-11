@@ -70,11 +70,17 @@ public class SelenideDocCheck {
     "bellintegrator.ru",
     "mir-platform.ru",
     "rtlabs.ru",
-    "sportmaster.ru"
+    "sportmaster.ru",
+    "greenatom.ru",
+    "tele2.ru"
   ));
 
   private boolean isForbiddenLink(String url) {
     return forbiddenRussianLinks.stream().anyMatch(link -> url.contains(link));
+  }
+
+  private boolean canIgnore(String url) {
+    return "https://www.accenture.com/us-en".equals(url);
   }
 
   @ParameterizedTest
@@ -94,6 +100,7 @@ public class SelenideDocCheck {
       String href = link.attr("href");
       if (href == null || href.startsWith("mailto:") || href.contains("://staging-server.com")) continue;
       if (isForbiddenLink(href)) continue;
+      if (canIgnore(href)) continue;
 
       System.out.print("  Checking " + href + " [" + link.text() + "] ... ");
       if (checked.contains(href)) {
