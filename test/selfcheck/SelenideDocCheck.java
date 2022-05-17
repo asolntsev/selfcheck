@@ -73,7 +73,8 @@ public class SelenideDocCheck {
     "sportmaster.ru",
     "greenatom.ru",
     "tele2.ru",
-    "raiffeisen.rucv"
+    "raiffeisen.rucv",
+    "raiffeisen.ru"
   ));
 
   private boolean isForbiddenLink(String url) {
