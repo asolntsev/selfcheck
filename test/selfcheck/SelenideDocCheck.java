@@ -31,6 +31,7 @@ import static org.apache.hc.core5.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
 import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.hc.core5.http.HttpStatus.SC_OK;
 import static org.apache.hc.core5.http.HttpStatus.SC_SERVER_ERROR;
+import static org.apache.hc.core5.http.HttpStatus.SC_SERVICE_UNAVAILABLE;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith({LogTestNameExtension.class})
@@ -134,7 +135,7 @@ public class SelenideDocCheck {
 
   private int checkLink(List<String> brokenLinks, String href) throws IOException {
     int statusCode = executeHttpRequest(new HttpHead(href));
-    if (statusCode == SC_METHOD_NOT_ALLOWED) {
+    if (statusCode == SC_METHOD_NOT_ALLOWED || statusCode == SC_SERVICE_UNAVAILABLE) {
       statusCode = executeHttpRequest(new HttpGet(href));
     }
     if (isOK(href, statusCode)) {
