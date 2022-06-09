@@ -76,7 +76,9 @@ public class SelenideDocCheck {
     "tele2.ru",
     "raiffeisen.rucv",
     "raiffeisen.ru",
-    "infotech.group"
+    "infotech.group",
+    "team.cft.ru",
+    "open.ru"
   ));
 
   private boolean isForbiddenLink(String url) {
@@ -84,7 +86,10 @@ public class SelenideDocCheck {
   }
 
   private boolean canIgnore(String url) {
-    return url.startsWith("https://www.accenture.com") || url.startsWith("https://www.blueberrycs.com");
+    return url.startsWith("https://www.accenture.com")
+      || url.startsWith("https://www.blueberrycs.com")
+      || url.startsWith("https://secureoffice.com")
+      || url.startsWith("https://www.bellintegrator.com/");
   }
 
   @ParameterizedTest
