@@ -84,7 +84,7 @@ public class SelenideDocCheck {
   }
 
   private boolean canIgnore(String url) {
-    return "https://www.blueberrycs.com".equals(url);
+    return url.startsWith("https://www.accenture.com") || url.startsWith("https://www.blueberrycs.com");
   }
 
   @ParameterizedTest
