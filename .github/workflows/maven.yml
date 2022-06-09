@@ -23,3 +23,15 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B test
+    - name: Generate test report
+      run: mvn -B surefire-report:report-only
+      if: failure()
+    - name: Upload test artifacts
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: test-report
+        path: |
+          target/surefire-reports
+          target/downloads
+          target/site
