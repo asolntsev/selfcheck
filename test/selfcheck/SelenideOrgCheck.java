@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith({LogTestNameExtension.class, ScreenShooterExtension.class})
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "6.5.1";
+  private static final String LAST_SELENIDE_VERSION = "6.6.0";
 
   @BeforeEach
   public void openPage() {
@@ -42,7 +42,7 @@ public class SelenideOrgCheck {
   public void selenideOrg() {
     open("https://selenide.org");
     $(".main-menu-pages a").shouldHave(text("Quick start"));
-    $(".short").shouldHave(text("What is Selenide?"));
+    $(".short.wiki").shouldHave(text("What is Selenide?"));
   }
 
   @Test

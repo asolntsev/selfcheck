@@ -75,7 +75,8 @@ public class SelenideDocCheck {
     "greenatom.ru",
     "tele2.ru",
     "raiffeisen.rucv",
-    "raiffeisen.ru"
+    "raiffeisen.ru",
+    "infotech.group"
   ));
 
   private boolean isForbiddenLink(String url) {
@@ -83,7 +84,7 @@ public class SelenideDocCheck {
   }
 
   private boolean canIgnore(String url) {
-    return "https://www.accenture.com/us-en".equals(url);
+    return "https://www.blueberrycs.com".equals(url);
   }
 
   @ParameterizedTest
