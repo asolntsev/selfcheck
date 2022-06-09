@@ -2,19 +2,17 @@ package selfcheck;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpHead;
-import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
-import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.SSLException;
 import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +23,9 @@ import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 import static java.lang.System.lineSeparator;
+import static java.net.http.HttpClient.Redirect.ALWAYS;
+import static java.net.http.HttpRequest.BodyPublishers.noBody;
+import static java.time.Duration.ofSeconds;
 import static java.util.Arrays.asList;
 import static org.apache.hc.core5.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.hc.core5.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
@@ -36,29 +37,33 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith({LogTestNameExtension.class})
 public class SelenideDocCheck {
-  private final HttpClient client = HttpClientBuilder.create().build();
-
+  private static final Logger log = LoggerFactory.getLogger(SelenideDocCheck.class);
   private static final int SC_I_AM_A_TEAPOT = 418;
-  private static final Set<String> checked = new HashSet<>(3000);
+  private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36";
 
-  private static String[] urls() {
-    return new String[]{
-        "https://ru.selenide.org/quick-start.html",
-        "https://ru.selenide.org/documentation/screenshots.html",
-        "https://ru.selenide.org/documentation/selenide-vs-selenium.html",
-        "https://ru.selenide.org/blog.html",
-        "https://ru.selenide.org/javadoc.html",
-        "https://ru.selenide.org/users.html",
-        "https://ru.selenide.org/documentation.html",
-        "https://selenide.org/quick-start.html",
-        "https://selenide.org/documentation/screenshots.html",
-        "https://selenide.org/documentation/selenide-vs-selenium.html",
-        "https://selenide.org/blog.html",
-        "https://selenide.org/javadoc.html",
-        "https://selenide.org/users.html",
-        "https://selenide.org/documentation.html"
-    };
-  }
+  private final Set<String> checked = new HashSet<>(3000);
+  private final Set<String> brokenLinks = new HashSet<>();
+  private final HttpClient client = HttpClient.newBuilder()
+    .connectTimeout(ofSeconds(20))
+    .followRedirects(ALWAYS)
+    .build();
+
+  private static final List<String> urls = List.of(
+    "https://ru.selenide.org/quick-start.html",
+    "https://ru.selenide.org/documentation/screenshots.html",
+    "https://ru.selenide.org/documentation/selenide-vs-selenium.html",
+    "https://ru.selenide.org/blog.html",
+    "https://ru.selenide.org/javadoc.html",
+    "https://ru.selenide.org/users.html",
+    "https://ru.selenide.org/documentation.html",
+    "https://selenide.org/quick-start.html",
+    "https://selenide.org/documentation/screenshots.html",
+    "https://selenide.org/documentation/selenide-vs-selenium.html",
+    "https://selenide.org/blog.html",
+    "https://selenide.org/javadoc.html",
+    "https://selenide.org/users.html",
+    "https://selenide.org/documentation.html"
+  );
 
   private static final Set<String> forbiddenRussianLinks = new HashSet<>(asList(
     "ubrr.ru",
@@ -92,57 +97,63 @@ public class SelenideDocCheck {
       || url.startsWith("https://www.bellintegrator.com/");
   }
 
-  @ParameterizedTest
-  @MethodSource("urls")
-  public void checkAllLinks(String page) throws IOException {
-    System.out.println("Checking links on " + page + " ...");
-    open("about:blank");
-    $$("a").shouldHave(size(0));
+  @Test
+  public void checkAllLinks() {
+    for (String page : urls) {
+      log.info("Checking links on {} ...", page);
+      open("about:blank");
+      $$("a").shouldHave(size(0));
 
-    open(page);
-    ElementsCollection links = $$(".head a:not([href*=\"disqus\"]), .main a:not([href*=\"disqus\"])").shouldHave(sizeGreaterThan(5));
+      open(page);
+      ElementsCollection links = $$(".head a:not([href*=\"disqus\"]), .main a:not([href*=\"disqus\"])");
+      links.shouldHave(sizeGreaterThan(5));
 
-    System.out.println("Checking links on " + page + ": " + links.texts());
-    List<String> brokenLinks = new ArrayList<>();
+      log.info("Checking links on {}: {}", page, links.texts());
 
-    for (SelenideElement link : links) {
-      String href = link.attr("href");
-      if (href == null || href.startsWith("mailto:") || href.contains("://staging-server.com")) continue;
-      if (isForbiddenLink(href)) continue;
-      if (canIgnore(href)) continue;
+      for (SelenideElement link : links) {
+        String href = link.attr("href");
+        if (href == null || href.startsWith("mailto:") || href.contains("://staging-server.com")) continue;
+        if (isForbiddenLink(href)) continue;
+        if (canIgnore(href)) continue;
 
-      System.out.print("  Checking " + href + " [" + link.text() + "] ... ");
-      if (checked.contains(href)) {
-        continue;
+        log.info("  Checking {} [{}] ... ", href, link.text());
+        if (checked.contains(href)) {
+          continue;
+        }
+        try {
+          int statusCode = checkLink(href);
+          log.info("  Checked {} [{}] -> {}", href, link.text(), statusCode);
+        }
+        catch (URISyntaxException | InterruptedException e) {
+          brokenLinks.add(href + " -> " + e);
+        }
       }
-      try {
-        int statusCode = checkLink(brokenLinks, href);
-        System.out.println(statusCode);
-      }
-      catch (SSLException e) {
-        System.out.println("SSL Error");
-      }
-      catch (UnknownHostException e) {
-        brokenLinks.add(href + " -> " + e);
-      }
+      log.info("All links on {} are checked", page);
     }
-    System.out.println("All links on " + page + " are checked");
     if (!brokenLinks.isEmpty()) {
       fail("Found broken links: " + brokenLinks.stream().collect(Collectors.joining(lineSeparator())));
     }
   }
 
-  private int executeHttpRequest(HttpUriRequestBase request) throws IOException {
-    request.setHeader("user-agent", USER_AGENT);
-    return client.execute(request).getCode();
+  private int executeHttpRequest(String method, String uri) throws InterruptedException, URISyntaxException {
+    HttpRequest request = HttpRequest.newBuilder()
+      .method(method, noBody())
+      .uri(new URI(uri))
+      .setHeader("user-agent", USER_AGENT)
+      .build();
+    try {
+      HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+      return response.statusCode();
+    }
+    catch (IOException connectionTimeout) {
+      return -1;
+    }
   }
 
-  private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36";
-
-  private int checkLink(List<String> brokenLinks, String href) throws IOException {
-    int statusCode = executeHttpRequest(new HttpHead(href));
+  private int checkLink(String href) throws InterruptedException, URISyntaxException {
+    int statusCode = executeHttpRequest("HEAD", href);
     if (statusCode == SC_METHOD_NOT_ALLOWED || statusCode == SC_SERVICE_UNAVAILABLE) {
-      statusCode = executeHttpRequest(new HttpGet(href));
+      statusCode = executeHttpRequest("GET", href);
     }
     if (isOK(href, statusCode)) {
       checked.add(href);
@@ -155,7 +166,7 @@ public class SelenideDocCheck {
 
   private boolean isOK(String href, int statusCode) {
     return statusCode == SC_OK || statusCode == SC_NO_CONTENT || statusCode == SC_I_AM_A_TEAPOT ||
-        (href.startsWith("https://vimeo.com") && statusCode == SC_FORBIDDEN) ||
-        (href.startsWith("https://luminor.ee") && statusCode == SC_SERVER_ERROR);
+      (href.startsWith("https://vimeo.com") && statusCode == SC_FORBIDDEN) ||
+      (href.startsWith("https://luminor.ee") && statusCode == SC_SERVER_ERROR);
   }
 }
