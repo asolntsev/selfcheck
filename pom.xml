@@ -61,7 +61,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M5</version>
+        <version>3.0.0-M7</version>
         <dependencies>
           <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -75,6 +75,8 @@
           </includes>
           <systemPropertyVariables>
             <selenide.headless>true</selenide.headless>
+            <selenide.reportsFolder>target/surefire-reports</selenide.reportsFolder>
+            <selenide.downloadsFolder>target/downloads</selenide.downloadsFolder>
           </systemPropertyVariables>
         </configuration>
       </plugin>
