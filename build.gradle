@@ -23,7 +23,7 @@ repositories{
 }
 
 dependencies {
-  testImplementation 'com.codeborne:selenide-proxy:6.6.0'
+  testImplementation 'com.codeborne:selenide-proxy:6.6.1'
   testImplementation('com.codeborne:selenide-clear-with-shortcut:6.6.0')
   testImplementation('org.apache.httpcomponents.client5:httpclient5:5.1.3') {
     exclude group: 'org.apache.httpcomponents.core5', module: 'httpcore5-h2'
