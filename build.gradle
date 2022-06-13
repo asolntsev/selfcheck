@@ -23,8 +23,8 @@ repositories{
 }
 
 dependencies {
-  testImplementation 'com.codeborne:selenide-proxy:6.6.2'
-  testImplementation('com.codeborne:selenide-clear-with-shortcut:6.6.2')
+  testImplementation 'com.codeborne:selenide-proxy:6.6.3'
+  testImplementation('com.codeborne:selenide-clear-with-shortcut:6.6.3')
   testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
   testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
   testImplementation 'org.assertj:assertj-core:3.23.1'
