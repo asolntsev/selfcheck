@@ -2,7 +2,6 @@ package selfcheck;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.junit5.TextReportExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -16,10 +15,8 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,6 +29,7 @@ import static java.net.http.HttpClient.Redirect.ALWAYS;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.time.Duration.ofSeconds;
 import static java.util.Arrays.asList;
+import static java.util.concurrent.ConcurrentHashMap.newKeySet;
 import static org.apache.hc.core5.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.hc.core5.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
 import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
@@ -40,13 +38,13 @@ import static org.apache.hc.core5.http.HttpStatus.SC_SERVER_ERROR;
 import static org.apache.hc.core5.http.HttpStatus.SC_SERVICE_UNAVAILABLE;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@ExtendWith({LogTestNameExtension.class, TextReportExtension.class})
+@ExtendWith({LogTestNameExtension.class})
 public class SelenideDocCheck {
   private static final Logger log = LoggerFactory.getLogger(SelenideDocCheck.class);
   private static final int SC_I_AM_A_TEAPOT = 418;
   private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36";
 
-  private final Set<String> checked = new HashSet<>(3000);
+  private final Set<Link> urlsToCheck = newKeySet();
   private final Set<String> brokenLinks = new HashSet<>();
   private final HttpClient client = HttpClient.newBuilder()
     .connectTimeout(ofSeconds(20))
@@ -105,17 +103,24 @@ public class SelenideDocCheck {
       || url.startsWith("https://www.bellintegrator.com/");
   }
 
-  @Test
-  public void checkAllLinks() {
-    Map<String, String> urlsToCheck = collectLinks();
-    checkLinks(urlsToCheck);
+  private enum HttpMethod {HEAD, GET}
+
+  private record Link(String href, HttpMethod method) {
   }
 
-  @Nonnull
-  @CheckReturnValue
-  private Map<String, String> collectLinks() {
-    Map<String, String> urlsToCheck = new HashMap<>();
+  @Test
+  public void checkAllLinks() {
+    long start = System.currentTimeMillis();
+    collectLinks();
+    long middle = System.currentTimeMillis();
+    checkLinks();
+    long end = System.currentTimeMillis();
 
+    log.info("Collected {} links in {} ms.", urlsToCheck.size(), middle - start);
+    log.info("Checked {} links in {} ms.", urlsToCheck.size(), end - middle);
+  }
+
+  private void collectLinks() {
     for (String page : urls) {
       log.info("Checking links on {} ...", page);
       open("about:blank");
@@ -132,29 +137,15 @@ public class SelenideDocCheck {
         if (href == null || href.startsWith("mailto:") || href.contains("://staging-server.com")) continue;
         if (isForbiddenLink(href)) continue;
         if (canIgnore(href)) continue;
-        urlsToCheck.put(href, link.text());
+        urlsToCheck.add(new Link(href, HttpMethod.HEAD));
       }
       log.info("All links on {} are collected", page);
     }
-    return urlsToCheck;
   }
 
-  private void checkLinks(Map<String, String> urlsToCheck) {
-    for (Map.Entry<String, String> entry : urlsToCheck.entrySet()) {
-      String href = entry.getKey();
-      String text = entry.getValue();
-
-      log.info("  Checking {} [{}] ... ", href, text);
-      if (checked.contains(href)) {
-        continue;
-      }
-      try {
-        HttpResponse<String> r = checkLink(href);
-        log.info("  Checked {} [{}] -> {}", href, text, r == null ? "timeout" : r.statusCode() + " " + r.body());
-      }
-      catch (URISyntaxException | InterruptedException e) {
-        brokenLinks.add(href + " -> " + e);
-      }
+  private void checkLinks() {
+    for (Link link : urlsToCheck) {
+      checkLink(link);
     }
     log.info("Checked {} links", urlsToCheck.size());
     if (!brokenLinks.isEmpty()) {
@@ -162,32 +153,34 @@ public class SelenideDocCheck {
     }
   }
 
-  private HttpResponse<String> executeHttpRequest(String method, String uri) throws InterruptedException, URISyntaxException {
+  @Nonnull
+  @CheckReturnValue
+  private HttpResponse<String> executeHttpRequest(Link link) throws InterruptedException, URISyntaxException, IOException {
     HttpRequest request = HttpRequest.newBuilder()
-      .method(method, noBody())
-      .uri(new URI(uri))
+      .method(link.method.name(), noBody())
+      .uri(new URI(link.href))
       .setHeader("user-agent", USER_AGENT)
       .build();
-    try {
-      return client.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-    catch (IOException connectionTimeout) {
-      return null;
-    }
+
+    return client.send(request, HttpResponse.BodyHandlers.ofString());
   }
 
-  private HttpResponse<String> checkLink(String href) throws InterruptedException, URISyntaxException {
-    HttpResponse<String> r = executeHttpRequest("HEAD", href);
-    if (r == null || r.statusCode() == SC_METHOD_NOT_ALLOWED || r.statusCode() == SC_SERVICE_UNAVAILABLE) {
-      r = executeHttpRequest("GET", href);
+  private void checkLink(Link link) {
+    try {
+      HttpResponse<String> r = executeHttpRequest(link);
+      log.info("  Checked {} {} -> {}", link.method, link.href, r.statusCode() + " " + r.body());
+
+      if (r.statusCode() == SC_METHOD_NOT_ALLOWED || r.statusCode() == SC_SERVICE_UNAVAILABLE) {
+        urlsToCheck.add(new Link(link.href, HttpMethod.GET));
+      }
+      else if (!isOK(link.href, r.statusCode())) {
+        brokenLinks.add(link.href + " -> " + r.statusCode());
+      }
     }
-    if (r != null && isOK(href, r.statusCode())) {
-      checked.add(href);
+    catch (IOException | URISyntaxException | InterruptedException connectivityIssue) {
+      log.info("  Checked {} {} -> {}", link.method, link.href, connectivityIssue.toString());
+      brokenLinks.add(link.href + " -> " + connectivityIssue);
     }
-    else {
-      brokenLinks.add(href + " -> " + (r == null ? "timeout" : r.statusCode()));
-    }
-    return r;
   }
 
   private boolean isOK(String href, int statusCode) {
