@@ -8,14 +8,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -103,6 +107,15 @@ public class SelenideDocCheck {
 
   @Test
   public void checkAllLinks() {
+    Map<String, String> urlsToCheck = collectLinks();
+    checkLinks(urlsToCheck);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  private Map<String, String> collectLinks() {
+    Map<String, String> urlsToCheck = new HashMap<>();
+
     for (String page : urls) {
       log.info("Checking links on {} ...", page);
       open("about:blank");
@@ -112,60 +125,69 @@ public class SelenideDocCheck {
       ElementsCollection links = $$(".head a:not([href*=\"disqus\"]), .main a:not([href*=\"disqus\"])");
       links.shouldHave(sizeGreaterThan(5));
 
-      log.info("Checking links on {}: {}", page, links.texts());
+      log.info("Collecting links on {}: {}", page, links.texts());
 
       for (SelenideElement link : links) {
         String href = link.attr("href");
         if (href == null || href.startsWith("mailto:") || href.contains("://staging-server.com")) continue;
         if (isForbiddenLink(href)) continue;
         if (canIgnore(href)) continue;
-
-        log.info("  Checking {} [{}] ... ", href, link.text());
-        if (checked.contains(href)) {
-          continue;
-        }
-        try {
-          int statusCode = checkLink(href);
-          log.info("  Checked {} [{}] -> {}", href, link.text(), statusCode);
-        }
-        catch (URISyntaxException | InterruptedException e) {
-          brokenLinks.add(href + " -> " + e);
-        }
+        urlsToCheck.put(href, link.text());
       }
-      log.info("All links on {} are checked", page);
+      log.info("All links on {} are collected", page);
     }
+    return urlsToCheck;
+  }
+
+  private void checkLinks(Map<String, String> urlsToCheck) {
+    for (Map.Entry<String, String> entry : urlsToCheck.entrySet()) {
+      String href = entry.getKey();
+      String text = entry.getValue();
+
+      log.info("  Checking {} [{}] ... ", href, text);
+      if (checked.contains(href)) {
+        continue;
+      }
+      try {
+        HttpResponse<String> r = checkLink(href);
+        log.info("  Checked {} [{}] -> {}", href, text, r == null ? "timeout" : r.statusCode() + " " + r.body());
+      }
+      catch (URISyntaxException | InterruptedException e) {
+        brokenLinks.add(href + " -> " + e);
+      }
+    }
+    log.info("Checked {} links", urlsToCheck.size());
     if (!brokenLinks.isEmpty()) {
       fail("Found broken links: " + brokenLinks.stream().collect(Collectors.joining(lineSeparator())));
     }
   }
 
-  private int executeHttpRequest(String method, String uri) throws InterruptedException, URISyntaxException {
+  private HttpResponse<String> executeHttpRequest(String method, String uri) throws InterruptedException, URISyntaxException {
     HttpRequest request = HttpRequest.newBuilder()
       .method(method, noBody())
       .uri(new URI(uri))
       .setHeader("user-agent", USER_AGENT)
       .build();
     try {
-      HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-      return response.statusCode();
+      return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
     catch (IOException connectionTimeout) {
-      return -1;
+      return null;
     }
   }
 
-  private int checkLink(String href) throws InterruptedException, URISyntaxException {
-    int statusCode = executeHttpRequest("HEAD", href);
-    if (statusCode == SC_METHOD_NOT_ALLOWED || statusCode == SC_SERVICE_UNAVAILABLE) {
-      statusCode = executeHttpRequest("GET", href);
+  private HttpResponse<String> checkLink(String href) throws InterruptedException, URISyntaxException {
+    HttpResponse<String> r = executeHttpRequest("HEAD", href);
+    if (r == null || r.statusCode() == SC_METHOD_NOT_ALLOWED || r.statusCode() == SC_SERVICE_UNAVAILABLE) {
+      r = executeHttpRequest("GET", href);
     }
-    if (isOK(href, statusCode)) {
+    if (r != null && isOK(href, r.statusCode())) {
       checked.add(href);
     }
     else {
-      brokenLinks.add(href + " -> " + statusCode);
+      brokenLinks.add(href + " -> " + (r == null ? "timeout" : r.statusCode()));
     }
-    return statusCode;
+    return r;
   }
 
   private boolean isOK(String href, int statusCode) {
