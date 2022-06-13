@@ -84,7 +84,9 @@ public class SelenideDocCheck {
     "infotech.group",
     "team.cft.ru",
     "open.ru",
-    "mts.ru"
+    "mts.ru",
+    "outlines.tech",
+    "savvymatics.com"
   ));
 
   private boolean isForbiddenLink(String url) {

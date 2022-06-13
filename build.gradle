@@ -1,5 +1,13 @@
 apply plugin: 'java'
 defaultTasks 'clean', 'test'
+
+ext {
+  selenideVersion = '6.6.3'
+  junitVersion = '5.8.2'
+  assertjVersion = '3.23.1'
+  slf4jVersion = '1.7.36'
+}
+
 sourceSets {
   main {
     java {srcDir 'src'}
@@ -23,12 +31,12 @@ repositories{
 }
 
 dependencies {
-  testImplementation 'com.codeborne:selenide-proxy:6.6.3'
-  testImplementation('com.codeborne:selenide-clear-with-shortcut:6.6.3')
-  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
-  testImplementation 'org.assertj:assertj-core:3.23.1'
-  testRuntimeOnly 'org.slf4j:slf4j-simple:1.7.36'
+  testImplementation "com.codeborne:selenide-proxy:$selenideVersion"
+  testImplementation "com.codeborne:selenide-clear-with-shortcut:$selenideVersion"
+  testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+  testImplementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+  testImplementation "org.assertj:assertj-core:$assertjVersion"
+  testRuntimeOnly "org.slf4j:slf4j-simple:$slf4jVersion"
 }
 
 configurations.all {
