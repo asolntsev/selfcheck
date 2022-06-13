@@ -2,6 +2,7 @@ package selfcheck;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.junit5.ScreenShooterExtension;
+import com.codeborne.selenide.junit5.TextReportExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +26,7 @@ import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.files.FileFilters.withNameMatching;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith({LogTestNameExtension.class, ScreenShooterExtension.class})
+@ExtendWith({LogTestNameExtension.class, ScreenShooterExtension.class, TextReportExtension.class})
 public class SelenideOrgCheck {
   private static final String LAST_SELENIDE_VERSION = "6.6.3";
 

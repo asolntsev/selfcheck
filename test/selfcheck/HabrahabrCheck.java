@@ -1,5 +1,6 @@
 package selfcheck;
 
+import com.codeborne.selenide.junit5.TextReportExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
@@ -9,7 +10,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-@ExtendWith({LogTestNameExtension.class})
+@ExtendWith({LogTestNameExtension.class, TextReportExtension.class})
 public class HabrahabrCheck {
   @Test
   public void selenideArticle() {
