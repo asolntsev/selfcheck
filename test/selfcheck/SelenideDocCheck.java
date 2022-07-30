@@ -89,7 +89,10 @@ public class SelenideDocCheck {
     "open.ru",
     "mts.ru",
     "outlines.tech",
-    "savvymatics.com"
+    "savvymatics.com",
+    "career.luxoft.com",
+    "sportradar.com",
+    "gmdp.ru"
   ));
 
   private boolean isForbiddenLink(String url) {
