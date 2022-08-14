@@ -173,17 +173,21 @@ public class SelenideDocCheck {
       HttpResponse<String> r = executeHttpRequest(link);
       log.info("  Checked {} {} -> {}", link.method, link.href, r.statusCode() + " " + r.body());
 
-      if (r.statusCode() == SC_METHOD_NOT_ALLOWED || r.statusCode() == SC_SERVICE_UNAVAILABLE) {
+      if (link.method() == HttpMethod.HEAD && isOKHeadError(r.statusCode())) {
         urlsToCheck.add(new Link(link.href, HttpMethod.GET));
       }
       else if (!isOK(link.href, r.statusCode())) {
-        brokenLinks.add(link.href + " -> " + r.statusCode());
+        brokenLinks.add(link.method + " " + link.href + " -> " + r.statusCode());
       }
     }
     catch (IOException | URISyntaxException | InterruptedException connectivityIssue) {
       log.info("  Checked {} {} -> {}", link.method, link.href, connectivityIssue.toString());
-      brokenLinks.add(link.href + " -> " + connectivityIssue);
+      brokenLinks.add(link.method + " " + link.href + " -> " + connectivityIssue);
     }
+  }
+
+  private boolean isOKHeadError(int statusCode) {
+    return statusCode == SC_METHOD_NOT_ALLOWED || statusCode == SC_SERVICE_UNAVAILABLE || statusCode == SC_FORBIDDEN;
   }
 
   private boolean isOK(String href, int statusCode) {
