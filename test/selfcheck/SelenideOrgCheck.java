@@ -26,7 +26,7 @@ import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.files.FileFilters.withNameMatching;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith({LogTestNameExtension.class, ScreenShooterExtension.class, TextReportExtension.class})
+@ExtendWith({LogTestNameExtension.class, PrintClasspathExtension.class, ScreenShooterExtension.class, TextReportExtension.class})
 public class SelenideOrgCheck {
   private static final String LAST_SELENIDE_VERSION = "6.7.2";
 

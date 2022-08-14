@@ -38,7 +38,7 @@ import static org.apache.hc.core5.http.HttpStatus.SC_SERVER_ERROR;
 import static org.apache.hc.core5.http.HttpStatus.SC_SERVICE_UNAVAILABLE;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@ExtendWith({LogTestNameExtension.class})
+@ExtendWith({LogTestNameExtension.class, PrintClasspathExtension.class})
 public class SelenideDocCheck {
   private static final Logger log = LoggerFactory.getLogger(SelenideDocCheck.class);
   private static final int SC_I_AM_A_TEAPOT = 418;

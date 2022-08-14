@@ -10,7 +10,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-@ExtendWith({LogTestNameExtension.class, TextReportExtension.class})
+@ExtendWith({LogTestNameExtension.class, PrintClasspathExtension.class, TextReportExtension.class})
 public class HabrahabrCheck {
   @Test
   public void selenideArticle() {

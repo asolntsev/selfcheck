@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 
-@ExtendWith({LogTestNameExtension.class, TextReportExtension.class})
+@ExtendWith({LogTestNameExtension.class, PrintClasspathExtension.class, TextReportExtension.class})
 public class Blog {
   @BeforeEach
   public void setUp() {
