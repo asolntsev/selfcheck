@@ -5,7 +5,7 @@ ext {
   selenideVersion = '6.7.4'
   junitVersion = '5.9.0'
   assertjVersion = '3.23.1'
-  slf4jVersion = '2.0.1'
+  slf4jVersion = '2.0.2'
   littleProxyVersion = '2.0.11'
 }
 
