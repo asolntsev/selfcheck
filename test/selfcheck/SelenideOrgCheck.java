@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import static com.codeborne.selenide.ClickOptions.usingJavaScript;
@@ -57,9 +58,10 @@ public class SelenideOrgCheck {
         .download(withNameMatching("selenide.*jar"));
 
     assertThat(selenideJar.getName()).isEqualTo("selenide-" + LAST_SELENIDE_VERSION + ".jar");
-    JarFile jarFile = new JarFile(selenideJar);
-    Enumeration en = jarFile.entries();
-    assertThat(en.hasMoreElements()).as("selenide.jar is empty").isTrue();
+    try (JarFile jarFile = new JarFile(selenideJar)) {
+      Enumeration<JarEntry> en = jarFile.entries();
+      assertThat(en.hasMoreElements()).as("selenide.jar is empty").isTrue();
+    }
   }
 
   @Test
