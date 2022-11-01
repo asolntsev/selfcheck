@@ -77,4 +77,5 @@ test {
   systemProperties 'selenide.pageLoadStrategy': 'none'
   systemProperties['BUILD_URL'] = System.getenv()['BUILD_URL']
   testLogging.showStandardStreams = true
+  outputs.upToDateWhen {false}
 }
