@@ -7,9 +7,9 @@
   <version>1.0.0-SNAPSHOT</version>
 
   <properties>
-    <selenide.version>6.9.0</selenide.version>
+    <selenide.version>6.10.0</selenide.version>
     <assertj.version>3.23.1</assertj.version>
-    <slf4j.version>2.0.3</slf4j.version>
+    <slf4j.version>2.0.4</slf4j.version>
     <junit.version>5.9.1</junit.version>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -21,6 +21,13 @@
       <artifactId>selenide-proxy</artifactId>
       <version>${selenide.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.valfirst.browserup-proxy</groupId>
+      <artifactId>browserup-proxy-core</artifactId>
+      <version>2.2.3</version>
+      <!-- had to downgrade BUP from 2.2.5 to 2.2.3 
+           because of bug https://github.com/valfirst/browserup-proxy/issues/177 -->
     </dependency>
     <dependency>
       <groupId>com.codeborne</groupId>
