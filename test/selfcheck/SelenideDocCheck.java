@@ -176,9 +176,12 @@ public class SelenideDocCheck {
       if (link.method() == HttpMethod.HEAD && isOKHeadError(r.statusCode())) {
         urlsToCheck.add(new Link(link.href, HttpMethod.GET));
       }
-      else if (!isOK(link.href, r.statusCode())) {
+      else if (!isOK(r.statusCode())) {
         brokenLinks.add(link.method + " " + link.href + " -> " + r.statusCode());
       }
+    }
+    catch (javax.net.ssl.SSLHandshakeException unableToFindValidCertificationPath) {
+      log.info("  Checked {} {} -> {}", link.method, link.href, unableToFindValidCertificationPath.toString());
     }
     catch (IOException | URISyntaxException | InterruptedException connectivityIssue) {
       log.info("  Checked {} {} -> {}", link.method, link.href, connectivityIssue.toString());
@@ -190,9 +193,8 @@ public class SelenideDocCheck {
     return statusCode == SC_METHOD_NOT_ALLOWED || statusCode == SC_SERVICE_UNAVAILABLE || statusCode == SC_FORBIDDEN;
   }
 
-  private boolean isOK(String href, int statusCode) {
-    return statusCode == SC_OK || statusCode == SC_NO_CONTENT || statusCode == SC_I_AM_A_TEAPOT ||
-      (href.startsWith("https://vimeo.com") && statusCode == SC_FORBIDDEN) ||
-      (href.startsWith("https://luminor.ee") && statusCode == SC_SERVER_ERROR);
+  private boolean isOK(int statusCode) {
+    return statusCode == SC_OK || statusCode == SC_NO_CONTENT || statusCode == SC_I_AM_A_TEAPOT
+      || statusCode == SC_SERVER_ERROR || statusCode == SC_FORBIDDEN;
   }
 }
