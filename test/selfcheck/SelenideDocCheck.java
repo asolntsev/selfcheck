@@ -36,6 +36,7 @@ import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.hc.core5.http.HttpStatus.SC_OK;
 import static org.apache.hc.core5.http.HttpStatus.SC_SERVER_ERROR;
 import static org.apache.hc.core5.http.HttpStatus.SC_SERVICE_UNAVAILABLE;
+import static org.apache.hc.core5.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.assertj.core.api.Assertions.fail;
 
 @ExtendWith({LogTestNameExtension.class, PrintClasspathExtension.class})
@@ -195,6 +196,6 @@ public class SelenideDocCheck {
 
   private boolean isOK(int statusCode) {
     return statusCode == SC_OK || statusCode == SC_NO_CONTENT || statusCode == SC_I_AM_A_TEAPOT
-      || statusCode == SC_SERVER_ERROR || statusCode == SC_FORBIDDEN;
+      || statusCode == SC_SERVER_ERROR || statusCode == SC_FORBIDDEN || statusCode == SC_UNAUTHORIZED;
   }
 }
