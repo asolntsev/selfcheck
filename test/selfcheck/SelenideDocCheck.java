@@ -30,6 +30,7 @@ import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.time.Duration.ofSeconds;
 import static java.util.Arrays.asList;
 import static java.util.concurrent.ConcurrentHashMap.newKeySet;
+import static org.apache.hc.core5.http.HttpStatus.SC_BAD_GATEWAY;
 import static org.apache.hc.core5.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.hc.core5.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
 import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
@@ -196,6 +197,6 @@ public class SelenideDocCheck {
 
   private boolean isOK(int statusCode) {
     return statusCode == SC_OK || statusCode == SC_NO_CONTENT || statusCode == SC_I_AM_A_TEAPOT
-      || statusCode == SC_SERVER_ERROR || statusCode == SC_FORBIDDEN || statusCode == SC_UNAUTHORIZED;
+      || statusCode == SC_SERVER_ERROR || statusCode == SC_BAD_GATEWAY || statusCode == SC_FORBIDDEN || statusCode == SC_UNAUTHORIZED;
   }
 }
