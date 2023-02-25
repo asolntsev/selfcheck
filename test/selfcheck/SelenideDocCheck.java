@@ -33,6 +33,7 @@ import static java.util.concurrent.ConcurrentHashMap.newKeySet;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_GATEWAY;
 import static org.apache.hc.core5.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.hc.core5.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
+import static org.apache.hc.core5.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.hc.core5.http.HttpStatus.SC_OK;
 import static org.apache.hc.core5.http.HttpStatus.SC_SERVER_ERROR;
@@ -192,7 +193,7 @@ public class SelenideDocCheck {
   }
 
   private boolean isOKHeadError(int statusCode) {
-    return statusCode == SC_METHOD_NOT_ALLOWED || statusCode == SC_SERVICE_UNAVAILABLE || statusCode == SC_FORBIDDEN;
+    return statusCode == SC_METHOD_NOT_ALLOWED || statusCode == SC_SERVICE_UNAVAILABLE || statusCode == SC_FORBIDDEN || statusCode == SC_NOT_FOUND;
   }
 
   private boolean isOK(int statusCode) {
