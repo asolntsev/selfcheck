@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-class PrintClasspathExtension implements BeforeAllCallback {
+public class PrintClasspathExtension implements BeforeAllCallback {
   private static final Logger log = LoggerFactory.getLogger(PrintClasspathExtension.class);
   private static final AtomicBoolean alreadyPrinted = new AtomicBoolean(false);
 

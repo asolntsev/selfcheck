@@ -3,7 +3,6 @@ package selfcheck;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +40,6 @@ import static org.apache.hc.core5.http.HttpStatus.SC_SERVICE_UNAVAILABLE;
 import static org.apache.hc.core5.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.assertj.core.api.Assertions.fail;
 
-@ExtendWith({LogTestNameExtension.class, PrintClasspathExtension.class})
 public class SelenideDocCheck {
   private static final Logger log = LoggerFactory.getLogger(SelenideDocCheck.class);
   private static final int SC_I_AM_A_TEAPOT = 418;

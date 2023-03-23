@@ -1,9 +1,7 @@
 package selfcheck;
 
-import com.codeborne.selenide.junit5.TextReportExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.codeborne.selenide.CollectionCondition.texts;
 import static com.codeborne.selenide.Selectors.byText;
@@ -11,7 +9,6 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 
-@ExtendWith({LogTestNameExtension.class, PrintClasspathExtension.class, TextReportExtension.class})
 public class Blog {
   @BeforeEach
   public void setUp() {
