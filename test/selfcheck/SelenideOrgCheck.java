@@ -25,7 +25,7 @@ import static com.codeborne.selenide.files.FileFilters.withNameMatching;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "6.12.4";
+  private static final String LAST_SELENIDE_VERSION = "6.13.0";
 
   @BeforeEach
   public void openPage() {
