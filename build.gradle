@@ -3,7 +3,7 @@ defaultTasks 'clean', 'test'
 
 ext {
   selenideVersion = '6.13.1'
-  junitVersion = '5.9.2'
+  junitVersion = '5.9.3'
   assertjVersion = '3.24.2'
   slf4jVersion = '2.0.7'
   littleProxyVersion = '2.0.15'
