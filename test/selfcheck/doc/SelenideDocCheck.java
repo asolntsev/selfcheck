@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.codeborne.selenide.Selenide.sleep;
 import static java.lang.System.lineSeparator;
@@ -37,6 +37,7 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.substring;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,6 +59,8 @@ public class SelenideDocCheck {
   private final Queue<Link> unprocessedLinks = new ConcurrentLinkedQueue<>();
   private final Queue<RunningRequest> runningRequests = new ConcurrentLinkedQueue<>();
   private final Set<String> brokenLinks = new HashSet<>();
+  private final Set<String> okLinks = new HashSet<>();
+  private final AtomicLong responsesCount = new AtomicLong();
   private final HttpClient client = HttpClient.newBuilder()
     .version(HTTP_1_1)
     .connectTimeout(ofSeconds(20))
@@ -103,12 +106,13 @@ public class SelenideDocCheck {
 
     log.info("Checked {} links", urlsToCheck.size());
     if (!brokenLinks.isEmpty()) {
-      fail("Found broken links: " + brokenLinks.stream().collect(Collectors.joining(lineSeparator())));
+      fail("Found broken links: " + brokenLinks.stream().collect(joining(lineSeparator())));
     }
 
     long end = System.currentTimeMillis();
 
-    log.info("Checked {} links in {} ms.", urlsToCheck.size(), end - middle);
+    log.info("Checked {} links in {} ms (received responses: {}, ok links: {})", urlsToCheck.size(), end - middle, responsesCount, okLinks.size());
+    log.debug("ok links: {}", String.join("\n", okLinks));
   }
 
   private void collectLinks(List<String> urls) throws IOException {
@@ -202,6 +206,7 @@ public class SelenideDocCheck {
 
   private void handleResponse(RunningRequest runningRequest) {
     Link link = runningRequest.link();
+    responsesCount.incrementAndGet();
     try {
       HttpResponse<String> r = runningRequest.response().get(20, SECONDS);
       log.info("  Checked {} {} -> {}", link.method(), link.href(), r.statusCode() + " " + shorten(r.body()));
@@ -211,6 +216,9 @@ public class SelenideDocCheck {
       }
       else if (!isOK(r.statusCode())) {
         brokenLinks.add(link.method() + " " + link.href() + " -> " + r.statusCode());
+      }
+      else {
+        okLinks.add(link.method() + " " + link.href() + " -> " + r.statusCode());
       }
     }
     catch (InterruptedException | ExecutionException | TimeoutException error) {
