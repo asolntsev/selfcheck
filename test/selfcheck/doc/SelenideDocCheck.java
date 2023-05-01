@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 import static com.codeborne.selenide.Selenide.sleep;
 import static java.lang.System.lineSeparator;
 import static java.net.http.HttpClient.Redirect.ALWAYS;
+import static java.net.http.HttpClient.Version.HTTP_1_1;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.time.Duration.ofSeconds;
 import static java.util.concurrent.ConcurrentHashMap.newKeySet;
@@ -50,7 +51,7 @@ public class SelenideDocCheck {
   private static final Logger log = LoggerFactory.getLogger(SelenideDocCheck.class);
 
   private final ExecutorService startRequestsThread = newSingleThreadExecutor(new ThreadNamer("start-requests-"));
-  private final ExecutorService executeRequestsThread = newFixedThreadPool(50, new ThreadNamer("execute-requests-"));
+  private final ExecutorService executeRequestsThread = newFixedThreadPool(20, new ThreadNamer("execute-requests-"));
   private final ExecutorService handleResponseThread = newSingleThreadExecutor(new ThreadNamer("handle-responses-"));
 
   private final Set<Link> urlsToCheck = newKeySet();
@@ -58,6 +59,7 @@ public class SelenideDocCheck {
   private final Queue<RunningRequest> runningRequests = new ConcurrentLinkedQueue<>();
   private final Set<String> brokenLinks = new HashSet<>();
   private final HttpClient client = HttpClient.newBuilder()
+    .version(HTTP_1_1)
     .connectTimeout(ofSeconds(20))
     .followRedirects(ALWAYS)
     .executor(executeRequestsThread)
