@@ -1,12 +1,15 @@
 package selfcheck.doc;
 
-import com.codeborne.selenide.Selenide;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -23,9 +26,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
-import static com.codeborne.selenide.CollectionCondition.size;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 import static java.lang.System.lineSeparator;
 import static java.net.http.HttpClient.Redirect.ALWAYS;
@@ -36,6 +36,7 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.substring;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -87,7 +88,7 @@ public class SelenideDocCheck {
   }
 
   @Test
-  public void checkAllLinks() throws InterruptedException {
+  public void checkAllLinks() throws InterruptedException, IOException {
     long start = System.currentTimeMillis();
     collectLinks(urls);
     long middle = System.currentTimeMillis();
@@ -108,28 +109,43 @@ public class SelenideDocCheck {
     log.info("Checked {} links in {} ms.", urlsToCheck.size(), end - middle);
   }
 
-  private void collectLinks(List<String> urls) {
+  private void collectLinks(List<String> urls) throws IOException {
     for (String page : urls) {
-      open("about:blank");
-      $$("a").shouldHave(size(0));
-
-      open(page);
-
       String linksSelector = ".head a:not([href*=\"disqus\"]), .main a:not([href*=\"disqus\"])";
-      List<String> hrefsJs = Selenide.executeJavaScript("""
-          return Array.from(document.querySelectorAll(arguments[0])).map(link => link.href)
-        """, linksSelector);
+      Document doc = Jsoup.connect(page).get();
+      Elements links = doc.select(linksSelector);
+      List<String> hrefsJs = links.stream()
+        .map(a -> a.attr("href"))
+        .filter(href -> !href.isEmpty())
+        .filter(href -> !"#".equals(href))
+        .filter(href -> !href.startsWith("mailto:"))
+        .filter(href -> !href.contains("://staging-server.com"))
+        .filter(href -> !isForbiddenLink(href))
+        .filter(href -> !canIgnore(href))
+        .map(href -> toAbsoluteUrl(page, href))
+        .collect(toList());
       assertThat(hrefsJs).as("Page %s should have some links", page).hasSizeGreaterThan(5);
 
       for (String href : hrefsJs) {
-        if (href == null || href.isBlank()) continue;
-        if (href.startsWith("mailto:") || href.contains("://staging-server.com")) continue;
-        if (isForbiddenLink(href)) continue;
-        if (canIgnore(href)) continue;
         addLink(href, HttpMethod.HEAD);
       }
       log.info("{} links from {} got collected", hrefsJs.size(), page);
     }
+  }
+
+  String toAbsoluteUrl(String baseUrl, String href) {
+    String result = href.startsWith("/") ? baseUrl.replaceFirst("(.+://[^/]+)/.*", "$1") + href : href;
+    return result;
+  }
+
+  @Test
+  void convertsHrefAttributeToUrl() {
+    assertThat(toAbsoluteUrl("https://selenide.org/documentation.html", "/faq.html"))
+      .isEqualTo("https://selenide.org/faq.html");
+    assertThat(toAbsoluteUrl("https://ru.selenide.org/documentation.html", "/users.html"))
+      .isEqualTo("https://ru.selenide.org/users.html");
+    assertThat(toAbsoluteUrl("https://ru.selenide.org/documentation/screenshots.html", "/users.html"))
+      .isEqualTo("https://ru.selenide.org/users.html");
   }
 
   private void checkLinks() {
