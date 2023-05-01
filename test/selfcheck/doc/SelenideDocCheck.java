@@ -119,7 +119,7 @@ public class SelenideDocCheck {
       List<String> hrefsJs = Selenide.executeJavaScript("""
           return Array.from(document.querySelectorAll(arguments[0])).map(link => link.href)
         """, linksSelector);
-      assertThat(hrefsJs).hasSizeGreaterThan(5);
+      assertThat(hrefsJs).as("Page %s should have some links", page).hasSizeGreaterThan(5);
 
       for (String href : hrefsJs) {
         if (href == null || href.isBlank()) continue;
