@@ -18,9 +18,23 @@
   <dependencies>
     <dependency>
       <groupId>com.codeborne</groupId>
-      <artifactId>selenide-proxy</artifactId>
+      <artifactId>selenide</artifactId>
       <version>${selenide.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.asynchttpclient</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.netty</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.opentelemetry</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.codeborne</groupId>
@@ -39,6 +53,11 @@
       <artifactId>selenide-appium</artifactId>
       <version>2.7.0</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-http-jdk-client</artifactId>
+      <version>4.8.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents.client5</groupId>
@@ -79,7 +98,17 @@
 
   <build>
     <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+      </resource>
+    </resources>
     <testSourceDirectory>test</testSourceDirectory>
+    <testResources>
+      <testResource>
+        <directory>test</directory>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -110,6 +139,31 @@
             <selenide.downloadsFolder>target/downloads</selenide.downloadsFolder>
           </systemPropertyVariables>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.2.1</version>
+        <executions>
+          <execution>
+            <id>enforce-banned-dependencies</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <excludes>
+                    <exclude>org.asynchttpclient</exclude>
+                    <exclude>io.netty</exclude>
+                    <exclude>io.opentelemetry</exclude>
+                  </excludes>
+                </bannedDependencies>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

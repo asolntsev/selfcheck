@@ -1,7 +1,5 @@
 package selfcheck;
 
-import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
@@ -15,7 +13,6 @@ import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.FileDownloadMode.PROXY;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
@@ -26,15 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SelenideOrgCheck {
   private static final String LAST_SELENIDE_VERSION = "6.13.0";
-
-  @BeforeEach
-  public void openPage() {
-    if (Configuration.fileDownload != PROXY) {
-      closeWebDriver();
-      Configuration.fileDownload = PROXY;
-    }
-    Configuration.proxyEnabled = true;
-  }
 
   @Test
   public void selenideOrg() {

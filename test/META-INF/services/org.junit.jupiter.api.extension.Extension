@@ -1,4 +1,5 @@
 selfcheck.LogTestNameExtension
 selfcheck.PrintClasspathExtension
+selfcheck.TestSetup
 com.codeborne.selenide.junit5.TextReportExtension
 com.codeborne.selenide.junit5.ScreenShooterExtension
