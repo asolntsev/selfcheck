@@ -117,7 +117,7 @@ public class SelenideDocCheck {
       List<String> hrefsJs = links.stream()
         .map(a -> a.attr("href"))
         .filter(href -> !href.isEmpty())
-        .filter(href -> !"#".equals(href))
+        .filter(href -> !href.startsWith("#"))
         .filter(href -> !href.startsWith("mailto:"))
         .filter(href -> !href.contains("://staging-server.com"))
         .filter(href -> !isForbiddenLink(href))
@@ -134,7 +134,8 @@ public class SelenideDocCheck {
   }
 
   String toAbsoluteUrl(String baseUrl, String href) {
-    String result = href.startsWith("/") ? baseUrl.replaceFirst("(.+://[^/]+)/.*", "$1") + href : href;
+    String path = href.contains("#") ? href.substring(0, href.indexOf('#')) : href;
+    String result = path.startsWith("/") ? baseUrl.replaceFirst("(.+://[^/]+)/.*", "$1") + path : path;
     return result;
   }
 
@@ -146,6 +147,8 @@ public class SelenideDocCheck {
       .isEqualTo("https://ru.selenide.org/users.html");
     assertThat(toAbsoluteUrl("https://ru.selenide.org/documentation/screenshots.html", "/users.html"))
       .isEqualTo("https://ru.selenide.org/users.html");
+    assertThat(toAbsoluteUrl("", "https://selenide.org/javadoc/com/codeborne/Selenide.html#by(java.lang.String)"))
+      .isEqualTo("https://selenide.org/javadoc/com/codeborne/Selenide.html");
   }
 
   private void checkLinks() {
