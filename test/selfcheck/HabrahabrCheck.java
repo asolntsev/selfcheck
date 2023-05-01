@@ -7,12 +7,13 @@ import static com.codeborne.selenide.Condition.href;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static java.time.Duration.ofSeconds;
 
 public class HabrahabrCheck {
   @Test
   public void selenideArticle() {
     open("https://habrahabr.ru/post/143269/");
-    $(".tm-title").shouldHave(text("Selenide: удобные тесты на Selenium WebDriver"));
+    $(".tm-title").shouldHave(text("Selenide: удобные тесты на Selenium WebDriver"), ofSeconds(10));
     $(By.linkText("Selenium WebDriver")).shouldHave(href("//code.google.com/p/selenium/"));
     $(By.linkText("Selenide"), 0).shouldHave(href("//ru.selenide.org/"));
     $(By.linkText("Selenide"), 1).shouldHave(href("//ru.selenide.org/"));
