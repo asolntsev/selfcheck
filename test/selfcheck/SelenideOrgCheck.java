@@ -10,6 +10,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import static com.codeborne.selenide.ClickOptions.usingJavaScript;
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.CollectionCondition.sizeLessThan;
 import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -101,5 +103,13 @@ public class SelenideOrgCheck {
       .click();
     $(".final-path").shouldHave(text("HangmanSpec.java"));
     $(".highlight").shouldHave(text("public class HangmanSpec"));
+  }
+
+  @Test
+  void showsSelenideUsers() {
+    SelenideUsersPage page = open("https://selenide.org/users.html", SelenideUsersPage.class);
+    page.users.shouldHave(sizeGreaterThan(50));
+    page.filterByTag("australia");
+    page.users.shouldHave(sizeLessThan(10));
   }
 }
