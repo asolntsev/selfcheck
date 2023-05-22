@@ -1,5 +1,6 @@
 package selfcheck.doc;
 
+import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,6 +8,7 @@ import static java.util.Arrays.asList;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_GATEWAY;
 import static org.apache.hc.core5.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.hc.core5.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
+import static org.apache.hc.core5.http.HttpStatus.SC_MOVED_TEMPORARILY;
 import static org.apache.hc.core5.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
 import static org.apache.hc.core5.http.HttpStatus.SC_OK;
@@ -58,7 +60,8 @@ class Http {
     return okHeadResponses.contains(statusCode);
   }
 
-  static boolean isOK(int statusCode) {
-    return okStatuses.contains(statusCode);
+  static boolean isOK(URI url, int statusCode) {
+    return okStatuses.contains(statusCode) ||
+      statusCode == SC_MOVED_TEMPORARILY && url.toString().startsWith("https://twitter.com/selenide");
   }
 }

@@ -214,7 +214,7 @@ public class SelenideDocCheck {
       if (link.method() == HttpMethod.HEAD && isOKHeadError(r.statusCode())) {
         addLink(link.href(), HttpMethod.GET);
       }
-      else if (!isOK(r.statusCode())) {
+      else if (!isOK(r.uri(), r.statusCode())) {
         brokenLinks.add(link.method() + " " + link.href() + " -> " + r.statusCode());
       }
       else {
