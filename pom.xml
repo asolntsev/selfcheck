@@ -7,7 +7,7 @@
   <version>1.0.0-SNAPSHOT</version>
 
   <properties>
-    <selenide.version>6.14.1</selenide.version>
+    <selenide.version>6.15.0</selenide.version>
     <assertj.version>3.24.2</assertj.version>
     <slf4j.version>2.0.7</slf4j.version>
     <junit.version>5.9.3</junit.version>
@@ -52,7 +52,7 @@
     <dependency>
       <groupId>com.codeborne</groupId>
       <artifactId>selenide-appium</artifactId>
-      <version>2.8.1</version>
+      <version>${selenide.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
