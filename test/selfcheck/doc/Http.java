@@ -60,8 +60,8 @@ class Http {
     return okHeadResponses.contains(statusCode);
   }
 
-  static boolean isOK(URI url, int statusCode) {
+  static boolean isOK(String href, int statusCode) {
     return okStatuses.contains(statusCode) ||
-      statusCode == SC_MOVED_TEMPORARILY && url.toString().startsWith("https://twitter.com/selenide");
+      statusCode == SC_MOVED_TEMPORARILY && href.startsWith("https://twitter.com/selenide");
   }
 }
