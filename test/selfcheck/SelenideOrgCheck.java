@@ -23,7 +23,7 @@ import static com.codeborne.selenide.files.FileFilters.withNameMatching;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "6.15.0";
+  private static final String LAST_SELENIDE_VERSION = "6.16.0";
 
   @Test
   public void selenideOrg() {
@@ -101,8 +101,8 @@ public class SelenideOrgCheck {
       .shouldHave(attribute("href", "https://github.com/selenide-examples/hangman/blob/master/test/uitest/selenide/HangmanSpec.java"))
       .scrollTo()
       .click();
-    $(".final-path").shouldHave(text("HangmanSpec.java"));
-    $(".highlight").shouldHave(text("public class HangmanSpec"));
+    $("#file-name-id").shouldHave(text("HangmanSpec.java"));
+    $("#read-only-cursor-text-area").shouldHave(text("public class HangmanSpec"));
   }
 
   @Test
