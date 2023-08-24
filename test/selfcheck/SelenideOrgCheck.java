@@ -98,10 +98,10 @@ public class SelenideOrgCheck {
     open("https://selenide.org/quick-start.html");
 
     $(By.linkText("Hangman game"))
-      .shouldHave(attribute("href", "https://github.com/selenide-examples/hangman/blob/master/test/uitest/selenide/HangmanSpec.java"))
+      .shouldHave(attribute("href", "https://github.com/selenide-examples/hangman/blob/main/test/uitest/selenide/HangmanSpec.java"))
       .scrollTo()
       .click();
-    $("#file-name-id").shouldHave(text("HangmanSpec.java"));
+    $("#file-name-id-wide").shouldHave(text("HangmanSpec.java"));
     $("#read-only-cursor-text-area").shouldHave(text("public class HangmanSpec"));
   }
 
