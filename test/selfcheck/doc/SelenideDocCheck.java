@@ -39,7 +39,6 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.StringUtils.substring;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static selfcheck.doc.Http.USER_AGENT;
@@ -231,7 +230,26 @@ public class SelenideDocCheck {
   }
 
   private String shorten(String html) {
-    return substring(html, 0, 200).replaceAll("\\n", "");
+    return substring(html, 200).replaceAll("\\n", "");
+  }
+
+  private String substring(String text, int maxLength) {
+    return text.length() <= maxLength ? text : text.substring(0, maxLength);
+  }
+
+  @Test
+  void substring() {
+    assertThat(substring("", 0)).isEqualTo("");
+    assertThat(substring("", 1)).isEqualTo("");
+    assertThat(substring("", 2)).isEqualTo("");
+    assertThat(substring("A", 0)).isEqualTo("");
+    assertThat(substring("A", 1)).isEqualTo("A");
+    assertThat(substring("A", 2)).isEqualTo("A");
+    assertThat(substring("AAA", 0)).isEqualTo("");
+    assertThat(substring("AAA", 1)).isEqualTo("A");
+    assertThat(substring("AAA", 2)).isEqualTo("AA");
+    assertThat(substring("AAA", 3)).isEqualTo("AAA");
+    assertThat(substring("AAA", 4)).isEqualTo("AAA");
   }
 
   private void addLink(String href, HttpMethod httpMethod) {
