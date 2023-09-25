@@ -1,5 +1,6 @@
 package selfcheck;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -15,7 +16,7 @@ public class LogTestNameExtension implements BeforeAllCallback, AfterAllCallback
 
   @Override
   public void beforeAll(ExtensionContext context) {
-    log.info("Starting {} @ {}", context.getDisplayName(), Configuration.browser);
+    log.info("Starting {} @ {} [{}]", context.getDisplayName(), Configuration.browser, Condition.visible);
   }
 
   @Override
