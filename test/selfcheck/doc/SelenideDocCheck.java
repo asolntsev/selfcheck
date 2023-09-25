@@ -33,8 +33,7 @@ import static java.net.http.HttpClient.Version.HTTP_1_1;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.time.Duration.ofSeconds;
 import static java.util.concurrent.ConcurrentHashMap.newKeySet;
-import static java.util.concurrent.Executors.newFixedThreadPool;
-import static java.util.concurrent.Executors.newSingleThreadExecutor;
+import static java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.stream.Collectors.joining;
@@ -50,9 +49,9 @@ import static selfcheck.doc.Threads.safely;
 public class SelenideDocCheck {
   private static final Logger log = LoggerFactory.getLogger(SelenideDocCheck.class);
 
-  private final ExecutorService startRequestsThread = newSingleThreadExecutor(new ThreadNamer("start-requests-"));
-  private final ExecutorService executeRequestsThread = newFixedThreadPool(20, new ThreadNamer("execute-requests-"));
-  private final ExecutorService handleResponseThread = newSingleThreadExecutor(new ThreadNamer("handle-responses-"));
+  private final ExecutorService startRequestsThread = newVirtualThreadPerTaskExecutor();
+  private final ExecutorService executeRequestsThread = newVirtualThreadPerTaskExecutor();
+  private final ExecutorService handleResponseThread = newVirtualThreadPerTaskExecutor();
 
   private final Set<Link> urlsToCheck = newKeySet();
   private final Queue<Link> unprocessedLinks = new ConcurrentLinkedQueue<>();
