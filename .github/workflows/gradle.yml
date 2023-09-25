@@ -23,10 +23,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK
-      uses: actions/setup-java@v3
+      uses: oracle-actions/setup-java@v1
       with:
         java-version: '21'
-        distribution: 'temurin'
         cache: 'gradle'
     - name: Analyze Gradle dependencies
       uses: gradle/gradle-build-action@v2
