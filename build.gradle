@@ -62,14 +62,14 @@ compileJava.dependsOn libs
 tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
   options.debug = true
-  sourceCompatibility = 17
+  sourceCompatibility = 21
 }
 
-sourceCompatibility = '17'
+sourceCompatibility = '21'
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(21)
   }
 }
 
