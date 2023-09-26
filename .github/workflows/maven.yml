@@ -18,8 +18,12 @@ jobs:
     - name: Set up JDK
       uses: oracle-actions/setup-java@v1
       with:
-        java-version: '21'
+        release: '21'
         cache: maven
+    - name: Check java version
+      run: java -version
+    - name: Check Maven version
+      run: mvn -v
     - name: Analyze Maven dependencies
       run: mvn dependency:tree
     - name: Build with Maven
