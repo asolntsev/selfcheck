@@ -26,7 +26,6 @@ jobs:
       uses: oracle-actions/setup-java@v1
       with:
         release: '21'
-        cache: 'gradle'
     - name: Check java version
       run: java -version
     - name: Analyze Gradle dependencies
