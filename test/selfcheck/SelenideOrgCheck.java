@@ -1,5 +1,6 @@
 package selfcheck;
 
+import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SelenideOrgCheck {
   private static final String LAST_SELENIDE_VERSION = "6.19.1";
+  private static final Condition enabledAndVisible = new EnabledAndVisible();
 
   @Test
   public void selenideOrg() {
@@ -53,14 +55,14 @@ public class SelenideOrgCheck {
   public void checkQuickGuideLink() {
     open("https://selenide.org");
     $(By.linkText("Quick start")).click();
-    $("body").find(byText("Quick start")).shouldBe(visible);
+    $("body").find(byText("Quick start")).shouldBe(enabledAndVisible);
   }
 
   @Test
   public void quickGuide_downloadSelenideJar() throws IOException {
     open("https://selenide.org/quick-start.html");
 
-    $("body").find(byText("Quick start")).shouldBe(visible);
+    $("body").find(byText("Quick start")).shouldBe(enabledAndVisible);
     checkSelenideJarLink();
   }
 
@@ -90,7 +92,7 @@ public class SelenideOrgCheck {
     $(By.linkText("Selenide examples"))
         .shouldHave(attribute("href", "https://github.com/selenide-examples"))
         .click(usingJavaScript());
-    $(".orghead").shouldHave(text("Selenide examples")).shouldBe(visible);
+    $(".orghead").shouldHave(text("Selenide examples")).shouldBe(enabledAndVisible);
   }
 
   @Test
