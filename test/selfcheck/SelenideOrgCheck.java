@@ -1,6 +1,6 @@
 package selfcheck;
 
-import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.WebElementCondition;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
@@ -15,7 +15,6 @@ import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.CollectionCondition.sizeLessThan;
 import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -24,8 +23,8 @@ import static com.codeborne.selenide.files.FileFilters.withNameMatching;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "6.19.1";
-  private static final Condition enabledAndVisible = new EnabledAndVisible();
+  private static final String LAST_SELENIDE_VERSION = "7.0.0";
+  private static final WebElementCondition enabledAndVisible = new EnabledAndVisible();
 
   @Test
   public void selenideOrg() {

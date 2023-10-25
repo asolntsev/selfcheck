@@ -2,7 +2,7 @@ apply plugin: 'java'
 defaultTasks 'clean', 'test'
 
 ext {
-  selenideVersion = '6.19.1'
+  selenideVersion = '7.0.0'
   junitVersion = '5.10.0'
   assertjVersion = '3.24.2'
   slf4jVersion = '2.0.9'
@@ -36,7 +36,6 @@ dependencies {
   testImplementation "com.codeborne:selenide-clear-with-shortcut:$selenideVersion"
   testImplementation "com.codeborne:selenide-full-screenshot:$selenideVersion"
   testImplementation "com.codeborne:selenide-appium:$selenideVersion"
-  testImplementation "org.seleniumhq.selenium:selenium-http-jdk-client:4.13.0"  
   testImplementation "org.apache.httpcomponents.client5:httpclient5:5.2.1"
   testImplementation "org.jsoup:jsoup:1.16.2"
   testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
