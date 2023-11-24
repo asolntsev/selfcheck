@@ -1,23 +1,22 @@
 package selfcheck.doc;
 
-import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
 import static java.util.Arrays.asList;
-import static org.apache.hc.core5.http.HttpStatus.SC_BAD_GATEWAY;
-import static org.apache.hc.core5.http.HttpStatus.SC_FORBIDDEN;
-import static org.apache.hc.core5.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
-import static org.apache.hc.core5.http.HttpStatus.SC_MOVED_TEMPORARILY;
-import static org.apache.hc.core5.http.HttpStatus.SC_NOT_FOUND;
-import static org.apache.hc.core5.http.HttpStatus.SC_NO_CONTENT;
-import static org.apache.hc.core5.http.HttpStatus.SC_OK;
-import static org.apache.hc.core5.http.HttpStatus.SC_SERVER_ERROR;
-import static org.apache.hc.core5.http.HttpStatus.SC_SERVICE_UNAVAILABLE;
-import static org.apache.hc.core5.http.HttpStatus.SC_UNAUTHORIZED;
 
 class Http {
-  static final int SC_I_AM_A_TEAPOT = 418;
+  private static final int SC_OK = 200;
+  private static final int SC_NO_CONTENT = 204;
+  private static final int SC_MOVED_TEMPORARILY = 302;
+  private static final int SC_UNAUTHORIZED = 401;
+  private static final int SC_FORBIDDEN = 403;
+  private static final int SC_NOT_FOUND = 404;
+  private static final int SC_METHOD_NOT_ALLOWED = 405;
+  private static final int SC_SERVER_ERROR = 500;
+  private static final int SC_BAD_GATEWAY = 502;
+  private static final int SC_SERVICE_UNAVAILABLE = 503;
+  private static final int SC_I_AM_A_TEAPOT = 418;
   static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36";
 
   private static final Set<Integer> okHeadResponses = Set.of(SC_METHOD_NOT_ALLOWED, SC_SERVICE_UNAVAILABLE,
