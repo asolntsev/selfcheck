@@ -7,7 +7,7 @@
   <version>1.0.0-SNAPSHOT</version>
 
   <properties>
-    <selenide.version>7.2.0</selenide.version>
+    <selenide.version>7.2.1</selenide.version>
     <assertj.version>3.25.3</assertj.version>
     <slf4j.version>2.0.12</slf4j.version>
     <junit.version>5.10.2</junit.version>
