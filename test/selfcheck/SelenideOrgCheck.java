@@ -23,7 +23,7 @@ import static com.codeborne.selenide.files.FileFilters.withNameMatching;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SelenideOrgCheck {
-  private static final String LAST_SELENIDE_VERSION = "7.2.1";
+  private static final String LAST_SELENIDE_VERSION = "7.2.3";
   private static final WebElementCondition enabledAndVisible = new EnabledAndVisible();
 
   @Test
