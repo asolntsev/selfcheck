@@ -10,7 +10,7 @@
     <selenide.version>7.3.3</selenide.version>
     <assertj.version>3.26.0</assertj.version>
     <slf4j.version>2.0.13</slf4j.version>
-    <junit.version>5.10.2</junit.version>
+    <junit.version>5.10.3</junit.version>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.plugin.validation>verbose</maven.plugin.validation>
