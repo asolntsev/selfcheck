@@ -3,7 +3,7 @@ defaultTasks 'clean', 'test'
 
 ext {
   selenideVersion = '7.5.1'
-  junitVersion = '5.11.0'
+  junitVersion = '5.11.1'
   assertjVersion = '3.26.3'
   slf4jVersion = '2.0.16'
 }
