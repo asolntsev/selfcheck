@@ -18,6 +18,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.page;
 import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.files.FileFilters.withNameMatching;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -108,7 +109,8 @@ public class SelenideOrgCheck {
 
   @Test
   void showsSelenideUsers() {
-    SelenideUsersPage page = open("https://selenide.org/users.html", SelenideUsersPage.class);
+    SelenideUsersPage page = page();
+    open("https://selenide.org/users.html");
     page.users.shouldHave(sizeGreaterThan(50));
     page.filterByTag("australia");
     page.users.shouldHave(sizeLessThan(10));
