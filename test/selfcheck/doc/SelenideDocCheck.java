@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -167,8 +165,6 @@ public class SelenideDocCheck {
     log.info("Started http requests for {} links ({} in queue)", urlsToCheck.size(), unprocessedLinks.size());
   }
 
-  @Nonnull
-  @CheckReturnValue
   private CompletableFuture<HttpResponse<String>> executeHttpRequest(Link link) throws URISyntaxException {
     HttpRequest request = HttpRequest.newBuilder()
       .method(link.method().name(), noBody())

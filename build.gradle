@@ -2,7 +2,7 @@ apply plugin: 'java'
 defaultTasks 'clean', 'test'
 
 ext {
-  selenideVersion = '7.5.1'
+  selenideVersion = '7.6.0'
   junitVersion = '5.11.3'
   assertjVersion = '3.26.3'
   slf4jVersion = '2.0.16'
