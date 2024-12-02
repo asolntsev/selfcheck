@@ -98,7 +98,7 @@ public class SelenideDocCheck {
     startRequestsThread.submit(safely("start requests", this::checkLinks));
     handleResponseThread.submit(safely("handle responses", this::handleResponses));
     handleResponseThread.shutdown();
-    handleResponseThread.awaitTermination(2, MINUTES);
+    assertThat(handleResponseThread.awaitTermination(2, MINUTES)).isTrue();
 
     log.info("Checked {} links", urlsToCheck.size());
     if (!brokenLinks.isEmpty()) {
@@ -125,7 +125,7 @@ public class SelenideDocCheck {
         .filter(href -> !isForbiddenLink(href))
         .filter(href -> !canIgnore(href))
         .map(href -> toAbsoluteUrl(page, href))
-        .collect(toList());
+        .toList();
       assertThat(hrefsJs).as("Page %s should have some links", page).hasSizeGreaterThan(5);
 
       for (String href : hrefsJs) {
@@ -137,8 +137,7 @@ public class SelenideDocCheck {
 
   String toAbsoluteUrl(String baseUrl, String href) {
     String path = href.contains("#") ? href.substring(0, href.indexOf('#')) : href;
-    String result = path.startsWith("/") ? baseUrl.replaceFirst("(.+://[^/]+)/.*", "$1") + path : path;
-    return result;
+    return path.startsWith("/") ? baseUrl.replaceFirst("(.+://[^/]+)/.*", "$1") + path : path;
   }
 
   @Test
