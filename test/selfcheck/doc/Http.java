@@ -13,6 +13,8 @@ class Http {
   private static final int SC_FORBIDDEN = 403;
   private static final int SC_NOT_FOUND = 404;
   private static final int SC_METHOD_NOT_ALLOWED = 405;
+  private static final int SC_TOO_MANY_REQUESTS = 429;
+  private static final int SC_TOO_MANY_REQUESTS_UNOFFICIAL = 430;
   private static final int SC_SERVER_ERROR = 500;
   private static final int SC_BAD_GATEWAY = 502;
   private static final int SC_SERVICE_UNAVAILABLE = 503;
@@ -22,7 +24,7 @@ class Http {
   private static final Set<Integer> okHeadResponses = Set.of(SC_METHOD_NOT_ALLOWED, SC_SERVICE_UNAVAILABLE,
     SC_FORBIDDEN, SC_NOT_FOUND);
   private static final Set<Integer> okStatuses = Set.of(SC_OK, SC_NO_CONTENT, SC_I_AM_A_TEAPOT, SC_SERVER_ERROR,
-    SC_BAD_GATEWAY, SC_FORBIDDEN, SC_UNAUTHORIZED);
+    SC_BAD_GATEWAY, SC_FORBIDDEN, SC_UNAUTHORIZED, SC_TOO_MANY_REQUESTS, SC_TOO_MANY_REQUESTS_UNOFFICIAL);
 
   private static final Set<String> forbiddenRussianLinks = new HashSet<>(asList(
     "ubrr.ru",
