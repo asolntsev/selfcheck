@@ -1,6 +1,7 @@
 package selfcheck;
 
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.support.FindBy;
 
 import static com.codeborne.selenide.Condition.text;
@@ -12,6 +13,9 @@ public class SelenideUsersPage {
 
   @FindBy(css = "#user-tags .tag")
   private ElementsCollection tags;
+
+  @FindBy(css = "#user-tags .reset-filter")
+  SelenideElement showAll;
 
   public void filterByTag(String tag) {
     tags.findBy(text(tag)).click();

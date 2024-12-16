@@ -11,6 +11,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import static com.codeborne.selenide.ClickOptions.usingJavaScript;
+import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.CollectionCondition.sizeLessThan;
 import static com.codeborne.selenide.Condition.attribute;
@@ -111,7 +112,11 @@ public class SelenideOrgCheck {
   void showsSelenideUsers() {
     SelenideUsersPage page = page();
     open("https://selenide.org/users.html");
+    page.users.shouldHave(size(1));
+
+    page.showAll.click();
     page.users.shouldHave(sizeGreaterThan(50));
+
     page.filterByTag("australia");
     page.users.shouldHave(sizeLessThan(10));
   }
