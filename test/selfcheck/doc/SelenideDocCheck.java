@@ -169,6 +169,7 @@ public class SelenideDocCheck {
       .method(link.method().name(), noBody())
       .uri(new URI(link.href()))
       .setHeader("user-agent", USER_AGENT)
+      .timeout(ofSeconds(18))
       .build();
 
     return client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
