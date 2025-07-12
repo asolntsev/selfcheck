@@ -35,7 +35,6 @@ import static java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static selfcheck.doc.Http.USER_AGENT;
@@ -85,6 +84,9 @@ public class SelenideDocCheck {
     return url.startsWith("https://www.accenture.com")
            || url.startsWith("https://www.blueberrycs.com")
            || url.startsWith("https://secureoffice.com")
+           || url.startsWith("https://www.corning.com")
+           || url.startsWith("https://www.veon.com")
+           || url.startsWith("https://realatom.com")
            || url.startsWith("https://www.bellintegrator.com/");
   }
 
