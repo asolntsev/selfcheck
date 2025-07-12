@@ -31,11 +31,11 @@ jobs:
     - name: Check java version
       run: java -version
     - name: Analyze Gradle dependencies
-      uses: gradle/gradle-build-action@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
         arguments: dependencies
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
         arguments: check
     - name: Upload test artifacts
