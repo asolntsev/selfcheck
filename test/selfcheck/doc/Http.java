@@ -1,9 +1,6 @@
 package selfcheck.doc;
 
-import java.util.HashSet;
 import java.util.Set;
-
-import static java.util.Arrays.asList;
 
 class Http {
   private static final int SC_OK = 200;
@@ -25,37 +22,6 @@ class Http {
     SC_FORBIDDEN, SC_NOT_FOUND);
   private static final Set<Integer> okStatuses = Set.of(SC_OK, SC_NO_CONTENT, SC_I_AM_A_TEAPOT, SC_SERVER_ERROR,
     SC_BAD_GATEWAY, SC_FORBIDDEN, SC_UNAUTHORIZED, SC_TOO_MANY_REQUESTS, SC_TOO_MANY_REQUESTS_UNOFFICIAL);
-
-  private static final Set<String> forbiddenRussianLinks = new HashSet<>(asList(
-    "ubrr.ru",
-    "alfabank.ru",
-    "rencredit.ru",
-    "severstal.com",
-    "dpi-solutions-ltd-",
-    "bspb.ru",
-    "www.walletone.com",
-    "bellintegrator.ru",
-    "mir-platform.ru",
-    "rtlabs.ru",
-    "sportmaster.ru",
-    "greenatom.ru",
-    "tele2.ru",
-    "raiffeisen.rucv",
-    "raiffeisen.ru",
-    "infotech.group",
-    "team.cft.ru",
-    "open.ru",
-    "mts.ru",
-    "outlines.tech",
-    "savvymatics.com",
-    "career.luxoft.com",
-    "sportradar.com",
-    "gmdp.ru"
-  ));
-
-  static boolean isForbiddenLink(String url) {
-    return forbiddenRussianLinks.stream().anyMatch(link -> url.contains(link));
-  }
 
   static boolean isOKHeadError(int statusCode) {
     return okHeadResponses.contains(statusCode);

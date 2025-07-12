@@ -38,7 +38,6 @@ import static java.util.stream.Collectors.joining;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static selfcheck.doc.Http.USER_AGENT;
-import static selfcheck.doc.Http.isForbiddenLink;
 import static selfcheck.doc.Http.isOK;
 import static selfcheck.doc.Http.isOKHeadError;
 import static selfcheck.doc.Threads.safely;
@@ -80,16 +79,6 @@ public class SelenideDocCheck {
     "https://selenide.org/documentation.html"
   );
 
-  private boolean canIgnore(String url) {
-    return url.startsWith("https://www.accenture.com")
-           || url.startsWith("https://www.blueberrycs.com")
-           || url.startsWith("https://secureoffice.com")
-           || url.startsWith("https://www.corning.com")
-           || url.startsWith("https://www.veon.com")
-           || url.startsWith("https://realatom.com")
-           || url.startsWith("https://www.bellintegrator.com/");
-  }
-
   @Test
   public void checkAllLinks() throws InterruptedException, IOException {
     long start = System.currentTimeMillis();
@@ -115,7 +104,7 @@ public class SelenideDocCheck {
 
   private void collectLinks(List<String> urls) throws IOException {
     for (String page : urls) {
-      String linksSelector = ".head a, .main a";
+      String linksSelector = ".head a, .main a:not(.external-link)";
       Document doc = Jsoup.connect(page).get();
       Elements links = doc.select(linksSelector);
       List<String> hrefsJs = links.stream()
@@ -124,8 +113,6 @@ public class SelenideDocCheck {
         .filter(href -> !href.startsWith("#"))
         .filter(href -> !href.startsWith("mailto:"))
         .filter(href -> !href.contains("://staging-server.com"))
-        .filter(href -> !isForbiddenLink(href))
-        .filter(href -> !canIgnore(href))
         .map(href -> toAbsoluteUrl(page, href))
         .toList();
       assertThat(hrefsJs).as("Page %s should have some links", page).hasSizeGreaterThan(5);
