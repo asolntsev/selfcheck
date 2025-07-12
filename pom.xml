@@ -12,6 +12,7 @@
     <assertj.version>3.27.3</assertj.version>
     <slf4j.version>2.0.17</slf4j.version>
     <junit.version>5.13.3</junit.version>
+    <toolchain.jdk.version>[21,)</toolchain.jdk.version>
     <maven.compiler.target>21</maven.compiler.target>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.plugin.validation>verbose</maven.plugin.validation>
@@ -105,6 +106,17 @@
         <configuration>
           <release>21</release>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-toolchains-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>select-jdk-toolchain</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
