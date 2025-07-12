@@ -115,7 +115,7 @@ public class SelenideDocCheck {
 
   private void collectLinks(List<String> urls) throws IOException {
     for (String page : urls) {
-      String linksSelector = ".head a:not([href*=\"disqus\"]), .main a:not([href*=\"disqus\"])";
+      String linksSelector = ".head a, .main a";
       Document doc = Jsoup.connect(page).get();
       Elements links = doc.select(linksSelector);
       List<String> hrefsJs = links.stream()
