@@ -30,14 +30,11 @@ jobs:
         cache: 'gradle'
     - name: Check java version
       run: java -version
+    - uses: gradle/actions/setup-gradle@v4
     - name: Analyze Gradle dependencies
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        arguments: dependencies
+      run: ./gradlew dependencies
     - name: Build with Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        arguments: check
+      run: ./gradlew check
     - name: Upload test artifacts
       uses: actions/upload-artifact@v4
       if: failure()
