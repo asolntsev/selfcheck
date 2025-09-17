@@ -12,9 +12,9 @@
     <assertj.version>3.27.4</assertj.version>
     <slf4j.version>2.0.17</slf4j.version>
     <junit.version>5.13.4</junit.version>
-    <toolchain.jdk.version>[21,)</toolchain.jdk.version>
-    <maven.compiler.target>21</maven.compiler.target>
-    <maven.compiler.source>21</maven.compiler.source>
+    <toolchain.jdk.version>[25,)</toolchain.jdk.version>
+    <maven.compiler.target>25</maven.compiler.target>
+    <maven.compiler.source>25</maven.compiler.source>
     <maven.plugin.validation>verbose</maven.plugin.validation>
   </properties>
 
@@ -104,7 +104,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.14.0</version>
         <configuration>
-          <release>21</release>
+          <release>25</release>
         </configuration>
       </plugin>
       <plugin>
