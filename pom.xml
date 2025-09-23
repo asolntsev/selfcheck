@@ -9,7 +9,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <selenide.version>7.10.1</selenide.version>
-    <assertj.version>3.27.5</assertj.version>
+    <assertj.version>3.27.6</assertj.version>
     <slf4j.version>2.0.17</slf4j.version>
     <junit.version>5.13.4</junit.version>
     <toolchain.jdk.version>[25,)</toolchain.jdk.version>
