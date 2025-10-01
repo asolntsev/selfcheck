@@ -30,7 +30,7 @@ jobs:
         cache: 'gradle'
     - name: Check java version
       run: java -version
-    - uses: gradle/actions/setup-gradle@v4
+    - uses: gradle/actions/setup-gradle@v5
     - name: Analyze Gradle dependencies
       run: ./gradlew dependencies
     - name: Build with Gradle
