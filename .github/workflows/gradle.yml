@@ -36,7 +36,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew check
     - name: Upload test artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       if: failure()
       with:
         name: test-report
