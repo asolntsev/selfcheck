@@ -8,7 +8,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <selenide.version>7.13.0</selenide.version>
+    <selenide.version>7.14.0</selenide.version>
     <assertj.version>3.27.6</assertj.version>
     <slf4j.version>2.0.17</slf4j.version>
     <junit.version>6.0.2</junit.version>
