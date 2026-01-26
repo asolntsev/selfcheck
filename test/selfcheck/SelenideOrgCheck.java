@@ -20,7 +20,6 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.page;
-import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.files.FileFilters.withNameMatching;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +37,6 @@ public class SelenideOrgCheck {
   @Test
   public void checkSelenideJarLink() throws IOException {
     open("https://selenide.org");
-    sleep(2000); // wait until page gets loaded (with all that disquss and video)
     String expectedHref = String.format("https://search.maven.org/remotecontent?filepath=com/codeborne/selenide/%s/selenide-%s.jar", LAST_SELENIDE_VERSION, LAST_SELENIDE_VERSION);
     File selenideJar = $(By.linkText("selenide.jar"))
         .shouldHave(attribute("href", expectedHref))
