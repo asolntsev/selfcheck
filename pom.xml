@@ -11,7 +11,7 @@
     <selenide.version>7.14.0</selenide.version>
     <assertj.version>3.27.7</assertj.version>
     <slf4j.version>2.0.17</slf4j.version>
-    <junit.version>6.0.2</junit.version>
+    <junit.version>6.0.3</junit.version>
     <toolchain.jdk.version>[25,)</toolchain.jdk.version>
     <maven.compiler.target>25</maven.compiler.target>
     <maven.compiler.source>25</maven.compiler.source>
